@@ -1,0 +1,4104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aurélia · Booking &amp; Billing Management System</title>
+<meta name="description" content="A reservations, billing and payment management console — booking lifecycle, GST billing engine, receipts and revenue reporting." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Aurélia — Booking & Billing Management System
+   Design system: editorial hospitality × financial precision
+   ============================================================ */
+
+:root {
+  --ink: #1a1a17;
+  --ink-soft: #3d3d37;
+  --ink-mute: #6f6f66;
+  --ink-faint: #9a9a90;
+
+  --paper: #f7f4ee;
+  --paper-2: #fbf9f4;
+  --card: #ffffff;
+  --card-warm: #fdfbf6;
+
+  --line: #e6e0d4;
+  --line-soft: #efeae0;
+  --line-strong: #d6cdba;
+
+  --brass: #a9822f;
+  --brass-deep: #8a6820;
+  --brass-light: #c9a45a;
+  --brass-wash: #f6efdd;
+
+  --sage: #4b6b52;
+  --sage-wash: #e8efe6;
+  --ocean: #2f5d70;
+  --ocean-wash: #e4eef2;
+  --plum: #6b3f5e;
+  --plum-wash: #f1e6ed;
+  --clay: #a4503a;
+  --clay-wash: #f8e9e4;
+
+  --rail: #14150f;
+  --rail-2: #1c1e16;
+
+  --ok: #3e7a4d;
+  --warn: #a4741c;
+  --bad: #a5432f;
+
+  --r-sm: 6px;
+  --r: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --sh-1: 0 1px 2px rgba(26, 26, 23, .05);
+  --sh-2: 0 2px 8px rgba(26, 26, 23, .06), 0 1px 2px rgba(26, 26, 23, .04);
+  --sh-3: 0 12px 32px -12px rgba(26, 26, 23, .18), 0 2px 8px rgba(26, 26, 23, .05);
+  --sh-4: 0 32px 64px -24px rgba(26, 26, 23, .28), 0 8px 20px -8px rgba(26, 26, 23, .12);
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+
+  --rail-w: 246px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+[data-theme="night"] {
+  --ink: #efeee7;
+  --ink-soft: #cfcec4;
+  --ink-mute: #a3a297;
+  --ink-faint: #77766c;
+  --paper: #121310;
+  --paper-2: #171814;
+  --card: #1b1c17;
+  --card-warm: #1f211a;
+  --line: #2c2e26;
+  --line-soft: #24261f;
+  --line-strong: #3a3d32;
+  --brass-wash: #2a2619;
+  --sage-wash: #1e2a1f;
+  --ocean-wash: #182a30;
+  --plum-wash: #2a1d26;
+  --clay-wash: #2e1d18;
+  --rail: #0b0c09;
+  --rail-2: #101109;
+  --sh-1: 0 1px 2px rgba(0,0,0,.4);
+  --sh-2: 0 2px 10px rgba(0,0,0,.45);
+  --sh-3: 0 16px 40px -16px rgba(0,0,0,.7);
+  --sh-4: 0 40px 80px -32px rgba(0,0,0,.8);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+  overflow: hidden;
+}
+
+::selection { background: var(--brass-light); color: #fff; }
+
+svg { display: block; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { font-weight: 500; line-height: 1.18; letter-spacing: -.015em; }
+
+/* ── Scrollbars ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 99px; border: 3px solid var(--paper); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── Rail ─────────────────────────────────────────────── */
+.rail {
+  width: var(--rail-w);
+  flex: 0 0 var(--rail-w);
+  background: var(--rail);
+  color: #e9e7dd;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 30;
+  transition: margin-left .38s var(--ease-out);
+}
+.rail::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(201, 164, 90, .13), transparent 60%),
+    radial-gradient(90% 50% at 100% 100%, rgba(75, 107, 82, .12), transparent 60%);
+}
+.rail > * { position: relative; z-index: 1; }
+
+.rail__brand {
+  display: flex; align-items: center; gap: 12px;
+  padding: 24px 22px 22px;
+}
+.monogram {
+  width: 38px; height: 38px; flex: 0 0 38px;
+  color: var(--brass-light);
+  border-radius: 10px;
+  background: rgba(201, 164, 90, .09);
+  border: 1px solid rgba(201, 164, 90, .22);
+  display: grid; place-items: center;
+}
+.monogram svg { width: 30px; height: 30px; }
+.rail__brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.rail__name {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 400; letter-spacing: .01em;
+  color: #f4f2e9;
+}
+.rail__sub {
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(233, 231, 221, .42); font-weight: 500; margin-top: 3px;
+}
+
+.rail__nav { flex: 1; overflow-y: auto; padding: 4px 12px 20px; }
+.rail__nav::-webkit-scrollbar { width: 0; }
+
+.rail__label {
+  font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(233, 231, 221, .3);
+  padding: 18px 12px 8px; font-weight: 600;
+}
+
+.navitem {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: rgba(233, 231, 221, .64);
+  font-size: 13.2px; font-weight: 450;
+  letter-spacing: -.005em;
+  position: relative;
+  transition: background .18s, color .18s;
+  margin-bottom: 1px;
+}
+.navitem__icon {
+  width: 17px; height: 17px; flex: 0 0 17px;
+  display: grid; place-items: center;
+  opacity: .72;
+  transition: opacity .18s, color .18s;
+}
+.navitem__icon svg { width: 17px; height: 17px; }
+.navitem:hover { background: rgba(255, 255, 255, .055); color: #f0eee5; }
+.navitem:hover .navitem__icon { opacity: 1; }
+.navitem.is-active {
+  background: linear-gradient(90deg, rgba(201, 164, 90, .18), rgba(201, 164, 90, .07));
+  color: #f6f4ec;
+  font-weight: 500;
+}
+.navitem.is-active .navitem__icon { opacity: 1; color: var(--brass-light); }
+.navitem.is-active::before {
+  content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 18px; border-radius: 0 3px 3px 0;
+  background: var(--brass-light);
+}
+.navitem__badge {
+  margin-left: auto; font-style: normal;
+  font-size: 10.5px; font-weight: 600; font-family: var(--font-mono);
+  background: rgba(255, 255, 255, .07);
+  color: rgba(233, 231, 221, .68);
+  padding: 1px 6px; border-radius: 5px;
+  min-width: 20px; text-align: center;
+}
+.navitem__badge[data-tone="alert"] { background: rgba(201, 164, 90, .2); color: var(--brass-light); }
+
+.rail__foot { padding: 14px 16px 18px; border-top: 1px solid rgba(255, 255, 255, .07); }
+.rail__note {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 9px;
+  background: rgba(255, 255, 255, .035);
+  border: 1px solid rgba(255, 255, 255, .05);
+}
+.rail__note strong { display: block; font-size: 11.5px; font-weight: 550; color: rgba(240, 238, 229, .9); }
+.rail__note small { font-size: 10px; color: rgba(233, 231, 221, .38); letter-spacing: .02em; }
+
+.dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex: 0 0 6px; }
+.dot--live { background: #63b47a; box-shadow: 0 0 0 3px rgba(99, 180, 122, .16); animation: pulse 2.6s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+
+/* ── Main ─────────────────────────────────────────────── */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--paper); }
+
+.topbar {
+  height: 64px; flex: 0 0 64px;
+  display: flex; align-items: center; gap: 18px;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--line-soft);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px);
+  position: relative; z-index: 20;
+}
+.topbar__menu { display: none; }
+.topbar__search {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; max-width: 400px;
+  height: 36px; padding: 0 11px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink-faint);
+  transition: border-color .2s, box-shadow .2s;
+}
+.topbar__search:focus-within { border-color: var(--brass-light); box-shadow: 0 0 0 3px rgba(201, 164, 90, .13); }
+.topbar__search svg { width: 15px; height: 15px; flex: 0 0 15px; }
+.topbar__search input { flex: 1; border: none; background: none; outline: none; font-size: 13px; color: var(--ink); min-width: 0; }
+.topbar__search input::placeholder { color: var(--ink-faint); }
+.topbar__search kbd {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 500;
+  color: var(--ink-faint); border: 1px solid var(--line);
+  border-radius: 4px; padding: 1px 5px; background: var(--paper-2);
+}
+
+.topbar__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.topbar__date {
+  font-size: 12px; color: var(--ink-mute); letter-spacing: .01em;
+  padding-right: 14px; margin-right: 4px;
+  border-right: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.canvas { flex: 1; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+.canvas:focus { outline: none; }
+
+.shell { max-width: 1320px; margin: 0 auto; padding: 34px 30px 100px; }
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: 36px; padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12.8px; font-weight: 500; letter-spacing: -.005em;
+  border: 1px solid transparent;
+  transition: background .16s, border-color .16s, color .16s, box-shadow .16s, transform .1s;
+  white-space: nowrap;
+  user-select: none;
+}
+.btn:active { transform: translateY(.5px); }
+.btn svg { width: 15px; height: 15px; flex: 0 0 15px; }
+
+.btn--primary {
+  background: var(--ink); color: var(--paper-2);
+  border-color: var(--ink);
+  box-shadow: var(--sh-1);
+}
+.btn--primary:hover { background: #2a2a24; box-shadow: var(--sh-2); }
+
+.btn--brass {
+  background: linear-gradient(180deg, #b98f36, var(--brass-deep));
+  color: #fffaf0;
+  border-color: var(--brass-deep);
+  box-shadow: 0 1px 2px rgba(138, 104, 32, .3), inset 0 1px 0 rgba(255, 255, 255, .16);
+}
+.btn--brass:hover { filter: brightness(1.06); }
+
+.btn--ghost {
+  background: var(--card); color: var(--ink-soft);
+  border-color: var(--line);
+}
+.btn--ghost:hover { border-color: var(--line-strong); background: var(--card-warm); color: var(--ink); }
+
+.btn--quiet { background: transparent; color: var(--ink-mute); height: 32px; padding: 0 9px; }
+.btn--quiet:hover { background: var(--paper-2); color: var(--ink); }
+
+.btn--danger { background: var(--card); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 28%, transparent); }
+.btn--danger:hover { background: var(--clay-wash); }
+
+.btn--sm { height: 30px; padding: 0 11px; font-size: 12px; border-radius: 7px; }
+.btn--lg { height: 44px; padding: 0 20px; font-size: 13.5px; border-radius: 10px; }
+.btn--block { width: 100%; }
+
+.iconbtn {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: 8px; color: var(--ink-mute);
+  border: 1px solid transparent;
+  transition: background .16s, color .16s, border-color .16s;
+}
+.iconbtn svg { width: 16px; height: 16px; }
+.iconbtn:hover { background: var(--paper-2); color: var(--ink); border-color: var(--line); }
+
+/* ============================================================
+   Typography helpers
+   ============================================================ */
+.eyebrow {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  font-weight: 600; color: var(--brass-deep);
+  display: flex; align-items: center; gap: 8px;
+}
+.eyebrow::before {
+  content: ''; width: 16px; height: 1px; background: var(--brass-light);
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 350;
+  letter-spacing: -.022em;
+  line-height: 1.06;
+  font-variation-settings: 'opsz' 100;
+}
+.num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-mute); }
+.faint { color: var(--ink-faint); }
+.tiny { font-size: 11px; }
+.sm { font-size: 12px; }
+.strong { font-weight: 550; color: var(--ink); }
+
+/* ============================================================
+   Page header
+   ============================================================ */
+.pagehead {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; margin-bottom: 30px; flex-wrap: wrap;
+}
+.pagehead__title { font-size: 30px; }
+.pagehead__sub { font-size: 13.5px; color: var(--ink-mute); margin-top: 7px; max-width: 62ch; }
+.pagehead__actions { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+
+/* ============================================================
+   Cards / panels
+   ============================================================ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+}
+.card__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 17px 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.card__title { font-size: 13.5px; font-weight: 600; letter-spacing: -.01em; }
+.card__sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+.card__body { padding: 20px; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  overflow: hidden;
+}
+
+/* ============================================================
+   KPI tiles — hero metrics
+   ============================================================ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 18px 20px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--sh-1);
+  transition: box-shadow .25s var(--ease), border-color .25s, transform .25s var(--ease);
+}
+.kpi:hover { box-shadow: var(--sh-3); border-color: var(--line-strong); transform: translateY(-1px); }
+.kpi__label {
+  font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 600;
+  display: flex; align-items: center; gap: 7px;
+}
+.kpi__value {
+  font-family: var(--font-display);
+  font-size: 33px; font-weight: 350;
+  letter-spacing: -.03em; line-height: 1.05;
+  margin-top: 13px; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline; gap: 3px;
+}
+.kpi__value small { font-size: 16px; color: var(--ink-faint); font-family: var(--font-ui); font-weight: 400; }
+.kpi__foot { margin-top: 11px; display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-mute); }
+
+.kpi--hero {
+  background:
+    radial-gradient(140% 120% at 100% 0%, rgba(201, 164, 90, .16), transparent 55%),
+    linear-gradient(160deg, #1a1b15 0%, #26271e 100%);
+  border-color: #2f3126;
+  color: #f2f0e6;
+}
+.kpi--hero .kpi__label { color: rgba(233, 231, 221, .5); }
+.kpi--hero .kpi__value { color: #faf8f0; font-size: 38px; }
+.kpi--hero .kpi__value small { color: rgba(233, 231, 221, .45); }
+.kpi--hero .kpi__foot { color: rgba(233, 231, 221, .55); }
+.kpi--hero:hover { border-color: var(--brass); }
+.kpi__spark { position: absolute; right: 0; bottom: 0; width: 58%; height: 58%; opacity: .5; pointer-events: none; }
+
+.delta { display: inline-flex; align-items: center; gap: 3px; font-weight: 600; font-size: 11.5px; }
+.delta svg { width: 11px; height: 11px; }
+.delta--up { color: var(--ok); }
+.delta--down { color: var(--bad); }
+.kpi--hero .delta--up { color: #7fc48f; }
+
+/* ============================================================
+   Dashboard grid
+   ============================================================ */
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+
+/* ============================================================
+   Charts
+   ============================================================ */
+.chart { width: 100%; }
+.chart__legend { display: flex; gap: 16px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-mute); }
+.legend-swatch { width: 9px; height: 9px; border-radius: 2.5px; }
+
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 156px; padding-top: 8px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; min-width: 0; }
+.bar-wrap { width: 100%; height: 100%; display: flex; align-items: flex-end; position: relative; }
+.bar {
+  width: 100%; border-radius: 4px 4px 2px 2px;
+  background: linear-gradient(180deg, var(--brass-light), var(--brass));
+  min-height: 2px;
+  position: relative;
+  transition: height .7s var(--ease-out), filter .2s;
+  opacity: .92;
+}
+.bar:hover { filter: brightness(1.1); opacity: 1; }
+.bar--ghost { background: var(--line-strong); }
+.bar-label { font-size: 10px; color: var(--ink-faint); letter-spacing: .02em; white-space: nowrap; }
+.bar-value { font-size: 10.5px; color: var(--ink-mute); font-family: var(--font-mono); }
+
+/* Donut */
+.donut-wrap { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.donut { width: 138px; height: 138px; flex: 0 0 138px; position: relative; }
+.donut__center {
+  position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
+}
+.donut__center strong { font-family: var(--font-display); font-size: 21px; font-weight: 400; letter-spacing: -.02em; display: block; }
+.donut__center span { font-size: 9.5px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-faint); }
+.donut-legend { flex: 1; min-width: 130px; display: flex; flex-direction: column; gap: 10px; }
+.donut-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.donut-row .nm { color: var(--ink-soft); flex: 1; }
+.donut-row .vl { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-mute); }
+
+/* ============================================================
+   Tables
+   ============================================================ */
+.tbl-wrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl thead th {
+  text-align: left; font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-faint);
+  padding: 11px 16px; border-bottom: 1px solid var(--line);
+  white-space: nowrap; background: var(--card-warm);
+}
+.tbl tbody td { padding: 13px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+.tbl tbody tr { transition: background .14s; cursor: pointer; }
+.tbl tbody tr:hover { background: var(--card-warm); }
+.tbl tbody tr:last-child td { border-bottom: none; }
+.tbl .t-right { text-align: right; }
+.tbl .t-mono { font-family: var(--font-mono); font-size: 12px; }
+.tbl .t-id { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); letter-spacing: -.02em; }
+.tbl .t-strong { font-weight: 550; color: var(--ink); }
+
+.who { display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 30px; height: 30px; flex: 0 0 30px; border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 600; letter-spacing: .01em;
+  background: var(--sage-wash); color: var(--sage);
+  border: 1px solid color-mix(in srgb, var(--sage) 14%, transparent);
+}
+.avatar--brass { background: var(--brass-wash); color: var(--brass-deep); border-color: color-mix(in srgb, var(--brass) 20%, transparent); }
+.avatar--ocean { background: var(--ocean-wash); color: var(--ocean); border-color: color-mix(in srgb, var(--ocean) 14%, transparent); }
+.avatar--plum { background: var(--plum-wash); color: var(--plum); border-color: color-mix(in srgb, var(--plum) 14%, transparent); }
+.who__name { font-weight: 500; color: var(--ink); line-height: 1.25; }
+.who__meta { font-size: 11px; color: var(--ink-faint); line-height: 1.3; }
+
+/* ============================================================
+   Badges / pills
+   ============================================================ */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 99px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.pill::before { content: ''; width: 4.5px; height: 4.5px; border-radius: 50%; background: currentColor; }
+.pill--confirmed { background: var(--sage-wash); color: var(--sage); border-color: color-mix(in srgb, var(--sage) 18%, transparent); }
+.pill--pending { background: var(--brass-wash); color: var(--brass-deep); border-color: color-mix(in srgb, var(--brass) 22%, transparent); }
+.pill--completed { background: var(--ocean-wash); color: var(--ocean); border-color: color-mix(in srgb, var(--ocean) 16%, transparent); }
+.pill--cancelled { background: var(--clay-wash); color: var(--clay); border-color: color-mix(in srgb, var(--clay) 20%, transparent); }
+.pill--paid { background: var(--sage-wash); color: var(--sage); border-color: color-mix(in srgb, var(--sage) 18%, transparent); }
+.pill--partial { background: var(--brass-wash); color: var(--brass-deep); border-color: color-mix(in srgb, var(--brass) 22%, transparent); }
+.pill--neutral { background: var(--paper-2); color: var(--ink-mute); border-color: var(--line); }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 500;
+  padding: 2px 7px; border-radius: 5px;
+  background: var(--paper-2); color: var(--ink-mute);
+  border: 1px solid var(--line);
+}
+.tag--gold { background: var(--brass-wash); color: var(--brass-deep); border-color: color-mix(in srgb, var(--brass) 18%, transparent); }
+
+/* ============================================================
+   Toolbar / filters
+   ============================================================ */
+.toolbar {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.segmented {
+  display: inline-flex; padding: 3px; gap: 2px;
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.segmented button {
+  font-size: 12px; font-weight: 500; color: var(--ink-mute);
+  padding: 5px 12px; border-radius: 6px;
+  transition: background .16s, color .16s, box-shadow .16s;
+  white-space: nowrap;
+}
+.segmented button:hover { color: var(--ink); }
+.segmented button.is-on {
+  background: var(--card); color: var(--ink);
+  box-shadow: var(--sh-1); font-weight: 550;
+}
+.spacer { flex: 1; }
+
+.field {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.field__label {
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-mute);
+  display: flex; align-items: center; gap: 5px;
+}
+.field__label .req { color: var(--brass); }
+.input, .select, .textarea {
+  width: 100%; height: 38px; padding: 0 11px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px; color: var(--ink);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+.input::placeholder, .textarea::placeholder { color: var(--ink-faint); }
+.input:hover, .select:hover, .textarea:hover { border-color: var(--line-strong); }
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--brass-light);
+  box-shadow: 0 0 0 3px rgba(201, 164, 90, .14);
+}
+.textarea { height: auto; min-height: 74px; padding: 9px 11px; resize: vertical; line-height: 1.5; }
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f6f66' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+.input--mono { font-family: var(--font-mono); font-size: 12.5px; }
+.field--err .input, .field--err .select, .field--err .textarea { border-color: var(--bad); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bad) 12%, transparent); }
+.field__err { font-size: 11px; color: var(--bad); display: none; }
+.field--err .field__err { display: block; }
+
+.search-inline {
+  display: flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 10px; min-width: 210px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--ink-faint);
+}
+.search-inline:focus-within { border-color: var(--brass-light); box-shadow: 0 0 0 3px rgba(201,164,90,.12); }
+.search-inline svg { width: 14px; height: 14px; flex: 0 0 14px; }
+.search-inline input { border: none; outline: none; background: none; flex: 1; font-size: 12.5px; color: var(--ink); min-width: 0; }
+
+/* ============================================================
+   New booking — split workspace
+   ============================================================ */
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 394px;
+  gap: 14px;
+  align-items: start;
+}
+.steps {
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 18px; flex-wrap: wrap;
+}
+.step {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; color: var(--ink-faint); font-weight: 500;
+  padding: 4px 8px 4px 4px; border-radius: 7px;
+}
+.step__n {
+  width: 19px; height: 19px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 10.5px; font-weight: 600;
+  border: 1px solid var(--line-strong); color: var(--ink-faint);
+  font-family: var(--font-mono);
+}
+.step.is-on { color: var(--ink); }
+.step.is-on .step__n { background: var(--ink); border-color: var(--ink); color: var(--paper-2); }
+.step.is-done .step__n { background: var(--sage-wash); border-color: color-mix(in srgb, var(--sage) 30%, transparent); color: var(--sage); }
+.step__arrow { color: var(--line-strong); font-size: 11px; }
+
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.form-grid .span-2 { grid-column: span 2; }
+
+.svc-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.svc-opt {
+  text-align: left; padding: 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card);
+  transition: border-color .18s, background .18s, box-shadow .18s, transform .12s;
+  position: relative;
+}
+.svc-opt:hover { border-color: var(--line-strong); background: var(--card-warm); }
+.svc-opt.is-on {
+  border-color: var(--brass); background: var(--brass-wash);
+  box-shadow: 0 0 0 3px rgba(201, 164, 90, .12);
+}
+.svc-opt__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.svc-opt__name { font-size: 12.5px; font-weight: 550; color: var(--ink); }
+.svc-opt__cat { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
+.svc-opt__rate { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-mute); margin-top: 7px; }
+.svc-opt__icon {
+  width: 26px; height: 26px; border-radius: 7px; flex: 0 0 26px;
+  display: grid; place-items: center;
+  background: var(--paper-2); color: var(--ink-mute);
+}
+.svc-opt.is-on .svc-opt__icon { background: rgba(201,164,90,.18); color: var(--brass-deep); }
+.svc-opt__icon svg { width: 14px; height: 14px; }
+
+.slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.slot {
+  padding: 9px 6px; text-align: center;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card);
+  transition: border-color .16s, background .16s, color .16s;
+}
+.slot:hover:not(:disabled) { border-color: var(--line-strong); background: var(--card-warm); }
+.slot.is-on { border-color: var(--brass); background: var(--brass-wash); color: var(--brass-deep); }
+.slot:disabled { opacity: .38; cursor: not-allowed; background: var(--paper-2); }
+.slot__label { font-size: 11.5px; font-weight: 550; display: block; }
+.slot__time { font-size: 9.5px; color: var(--ink-faint); font-family: var(--font-mono); margin-top: 2px; display: block; }
+.slot.is-taken { text-decoration: line-through; }
+
+/* line items editor */
+.lines { display: flex; flex-direction: column; }
+.line-row {
+  display: grid; grid-template-columns: 1fr 62px 88px 76px 26px;
+  gap: 8px; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--line-soft);
+}
+.line-row:last-child { border-bottom: none; }
+.line-row__amt { font-family: var(--font-mono); font-size: 12px; text-align: right; color: var(--ink-soft); }
+.line-row .input { height: 32px; font-size: 12.5px; padding: 0 8px; }
+.line-del { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; color: var(--ink-faint); }
+.line-del:hover { background: var(--clay-wash); color: var(--bad); }
+.line-del svg { width: 13px; height: 13px; }
+
+.addon-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11.5px; padding: 5px 10px; border-radius: 99px;
+  border: 1px dashed var(--line-strong); color: var(--ink-mute);
+  background: transparent;
+  transition: all .16s;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.chip:hover { border-color: var(--brass); color: var(--brass-deep); background: var(--brass-wash); }
+.chip.is-on { border-style: solid; border-color: var(--brass); background: var(--brass-wash); color: var(--brass-deep); font-weight: 500; }
+.chip svg { width: 11px; height: 11px; }
+
+/* Summary / bill panel */
+.billpanel {
+  position: sticky; top: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-2);
+  overflow: hidden;
+}
+.billpanel__head {
+  padding: 16px 20px;
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(201,164,90,.14), transparent 60%),
+    linear-gradient(160deg, #1a1b15, #26271e);
+  color: #f2f0e6;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.billpanel__head h3 { font-family: var(--font-display); font-size: 17px; font-weight: 400; letter-spacing: .01em; }
+.billpanel__body { padding: 16px 20px; }
+.bill-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 6px 0; font-size: 12.5px; }
+.bill-line .k { color: var(--ink-mute); }
+.bill-line .v { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.bill-line--item .k { color: var(--ink-soft); font-size: 12px; }
+.bill-line--item .v { color: var(--ink-soft); }
+.bill-line--sub { border-top: 1px solid var(--line-soft); padding-top: 10px; margin-top: 4px; }
+.bill-line--sub .k, .bill-line--sub .v { color: var(--ink); font-weight: 550; }
+.bill-line--disc .v { color: var(--ok); }
+.bill-line--muted .k, .bill-line--muted .v { color: var(--ink-faint); font-size: 11.5px; }
+.bill-total {
+  margin-top: 12px; padding: 14px 0 0;
+  border-top: 1.5px solid var(--ink);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.bill-total .k { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; }
+.bill-total .v {
+  font-family: var(--font-display); font-size: 27px; font-weight: 400;
+  letter-spacing: -.03em; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.bill-foot { padding: 0 20px 18px; display: flex; flex-direction: column; gap: 9px; }
+.bill-note {
+  font-size: 10.5px; color: var(--ink-faint); text-align: center; line-height: 1.5;
+  padding-top: 4px;
+}
+
+.words {
+  font-size: 10.5px; color: var(--ink-mute); font-style: italic;
+  background: var(--paper-2); border: 1px dashed var(--line);
+  border-radius: 7px; padding: 7px 9px; line-height: 1.45;
+  margin-bottom: 4px;
+}
+.words strong { font-style: normal; font-weight: 600; color: var(--ink-soft); display: block; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+
+/* ============================================================
+   Availability board
+   ============================================================ */
+.avail { display: grid; gap: 14px; }
+.avail-row {
+  display: grid; grid-template-columns: 190px repeat(4, 1fr);
+  gap: 1px; background: var(--line-soft);
+  border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+}
+.avail-cell {
+  background: var(--card); padding: 10px 12px; min-height: 54px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+}
+.avail-cell--head { background: var(--card-warm); }
+.avail-cell--name { background: var(--card-warm); }
+.avail-cell__name { font-size: 12px; font-weight: 550; color: var(--ink); }
+.avail-cell__meta { font-size: 10px; color: var(--ink-faint); font-family: var(--font-mono); }
+.avail-cell__slot { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--ink-faint); }
+.avail-book { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink-soft); }
+.avail-book .who__name { font-size: 11px; }
+.free {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; color: var(--sage); font-weight: 500;
+  border: 1px dashed color-mix(in srgb, var(--sage) 32%, transparent);
+  border-radius: 5px; padding: 2px 7px; align-self: flex-start;
+}
+.free:hover { background: var(--sage-wash); border-style: solid; }
+
+/* ============================================================
+   Timeline (upcoming)
+   ============================================================ */
+.timeline { display: flex; flex-direction: column; }
+.tl-item {
+  display: grid; grid-template-columns: 58px 1fr auto;
+  gap: 14px; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: background .14s;
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-item:hover { background: var(--card-warm); }
+.tl-date { text-align: center; }
+.tl-date .d { font-family: var(--font-display); font-size: 19px; font-weight: 400; line-height: 1; letter-spacing: -.02em; }
+.tl-date .m { font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-faint); margin-top: 3px; font-weight: 600; }
+.tl-main { min-width: 0; }
+.tl-title { font-size: 12.8px; font-weight: 550; color: var(--ink); }
+.tl-meta { font-size: 11px; color: var(--ink-faint); margin-top: 2px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.tl-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--line-strong); display: inline-block; }
+.tl-amt { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); text-align: right; }
+
+/* ============================================================
+   Customer cards
+   ============================================================ */
+.cust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(266px, 1fr)); gap: 14px; }
+.cust {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 17px;
+  cursor: pointer;
+  transition: box-shadow .22s var(--ease), border-color .22s, transform .22s var(--ease);
+  position: relative;
+}
+.cust:hover { box-shadow: var(--sh-3); border-color: var(--line-strong); transform: translateY(-2px); }
+.cust__top { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+.cust__av {
+  width: 40px; height: 40px; flex: 0 0 40px; border-radius: 11px;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-size: 16px; font-weight: 500;
+  background: var(--brass-wash); color: var(--brass-deep);
+  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+}
+.cust__name { font-size: 13.5px; font-weight: 550; letter-spacing: -.01em; }
+.cust__id { font-size: 10.5px; color: var(--ink-faint); font-family: var(--font-mono); margin-top: 1px; }
+.cust__rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 13px; }
+.cust__row { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--ink-mute); }
+.cust__row svg { width: 12px; height: 12px; flex: 0 0 12px; color: var(--ink-faint); }
+.cust__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 11px; border-top: 1px solid var(--line-soft);
+}
+.cust__stat { font-size: 10.5px; color: var(--ink-faint); }
+.cust__stat b { display: block; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink); font-weight: 500; margin-top: 1px; }
+
+/* ============================================================
+   Drawer
+   ============================================================ */
+.scrim {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(20, 21, 15, .36);
+  backdrop-filter: blur(2px);
+  animation: fadeIn .24s var(--ease);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 100;
+  width: min(520px, 100vw);
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  box-shadow: var(--sh-4);
+  display: flex; flex-direction: column;
+  animation: slideIn .34s var(--ease-out);
+}
+@keyframes slideIn { from { transform: translateX(30px); opacity: .4; } to { transform: none; opacity: 1; } }
+.drawer__head {
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+  background: var(--card);
+}
+.drawer__body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer__foot {
+  padding: 14px 22px; border-top: 1px solid var(--line);
+  background: var(--card);
+  display: flex; gap: 9px; flex-wrap: wrap;
+}
+
+/* ============================================================
+   Modal
+   ============================================================ */
+.modal {
+  position: fixed; inset: 0; z-index: 110;
+  display: grid; place-items: center;
+  padding: 24px;
+  background: rgba(20, 21, 15, .4);
+  backdrop-filter: blur(3px);
+  animation: fadeIn .2s var(--ease);
+  overflow-y: auto;
+}
+.modal__box {
+  width: min(560px, 100%);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-4);
+  animation: pop .3s var(--ease-out);
+  max-height: calc(100vh - 48px);
+  display: flex; flex-direction: column;
+}
+@keyframes pop { from { transform: scale(.97) translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal__head { padding: 20px 22px 0; }
+.modal__head h3 { font-family: var(--font-display); font-size: 21px; font-weight: 400; letter-spacing: -.01em; }
+.modal__head p { font-size: 12.5px; color: var(--ink-mute); margin-top: 5px; }
+.modal__body { padding: 18px 22px; overflow-y: auto; }
+.modal__foot {
+  padding: 14px 22px 20px; display: flex; gap: 9px; justify-content: flex-end;
+  border-top: 1px solid var(--line-soft); margin-top: 4px;
+}
+
+/* ============================================================
+   Empty states
+   ============================================================ */
+.empty {
+  padding: 54px 24px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.empty__icon {
+  width: 46px; height: 46px; border-radius: 13px;
+  display: grid; place-items: center;
+  background: var(--paper-2); color: var(--ink-faint);
+  border: 1px solid var(--line);
+}
+.empty__icon svg { width: 21px; height: 21px; }
+.empty h4 { font-size: 14px; font-weight: 550; }
+.empty p { font-size: 12.5px; color: var(--ink-mute); max-width: 36ch; }
+
+/* ============================================================
+   Toasts
+   ============================================================ */
+.toasts {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  display: flex; flex-direction: column; gap: 9px; align-items: flex-end;
+}
+.toast {
+  display: flex; align-items: center; gap: 11px;
+  background: #1c1d17; color: #f2f0e6;
+  padding: 11px 15px; border-radius: 10px;
+  box-shadow: var(--sh-4);
+  font-size: 12.5px; font-weight: 450;
+  border: 1px solid #2f3126;
+  animation: toastIn .32s var(--ease-out);
+  max-width: 340px;
+}
+@keyframes toastIn { from { transform: translateY(14px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+.toast.is-out { animation: toastOut .26s var(--ease) forwards; }
+@keyframes toastOut { to { transform: translateX(20px); opacity: 0; } }
+.toast__icon {
+  width: 20px; height: 20px; flex: 0 0 20px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(201, 164, 90, .18); color: var(--brass-light);
+}
+.toast__icon svg { width: 12px; height: 12px; }
+.toast--ok .toast__icon { background: rgba(99, 180, 122, .18); color: #7fc48f; }
+.toast--bad .toast__icon { background: rgba(201, 90, 70, .2); color: #e08b78; }
+
+/* ============================================================
+   Invoice / receipt
+   ============================================================ */
+.invoice-doc {
+  background: #fff; color: #1a1a17;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  max-width: 100%;
+}
+.inv-head {
+  padding: 26px 30px 22px;
+  display: flex; justify-content: space-between; gap: 24px;
+  border-bottom: 1.5px solid #1a1a17;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+.inv-brand { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+.inv-brand__mark {
+  width: 38px; height: 38px; border-radius: 10px; flex: 0 0 38px;
+  background: #f6efdd; color: #8a6820; display: grid; place-items: center;
+  border: 1px solid rgba(169, 130, 47, .25);
+}
+.inv-brand__mark svg { width: 22px; height: 22px; }
+.inv-brand h2 { font-family: var(--font-display); font-size: 19px; font-weight: 500; letter-spacing: -.01em; }
+.inv-brand p { font-size: 10.5px; color: #6f6f66; line-height: 1.55; margin-top: 3px; }
+.inv-meta { text-align: right; min-width: 178px; flex: 0 0 auto; }
+.inv-meta h3 { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: #8a6820; font-weight: 700; }
+.inv-meta .no { font-family: var(--font-mono); font-size: 16px; font-weight: 500; margin-top: 4px; letter-spacing: -.02em; }
+.inv-meta .dt { font-size: 11px; color: #6f6f66; margin-top: 3px; }
+
+.inv-parties {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 26px;
+  padding: 20px 30px; border-bottom: 1px solid #e6e0d4;
+}
+.inv-party h4 { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #9a9a90; font-weight: 700; margin-bottom: 7px; }
+.inv-party .nm { font-size: 13.5px; font-weight: 600; }
+.inv-party .ln { font-size: 11.5px; color: #6f6f66; margin-top: 2px; }
+.inv-party .id { font-family: var(--font-mono); font-size: 10.5px; color: #9a9a90; margin-top: 5px; }
+
+.inv-items { padding: 8px 30px 0; }
+.inv-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.inv-tbl thead th {
+  text-align: left; font-size: 9px; letter-spacing: .13em; text-transform: uppercase;
+  color: #9a9a90; font-weight: 700; padding: 12px 0;
+  border-bottom: 1px solid #e6e0d4;
+}
+.inv-tbl tbody td { padding: 10px 0; border-bottom: 1px solid #f0ece2; color: #3d3d37; }
+.inv-tbl .amt { text-align: right; font-family: var(--font-mono); font-size: 11.5px; }
+.inv-tbl .t-right { text-align: right; }
+.inv-tbl td.t-right { text-align: right; font-family: var(--font-mono); font-size: 11.5px; }
+
+.inv-sum { display: flex; justify-content: flex-end; padding: 16px 30px 4px; }
+.inv-sum__box { width: 100%; max-width: 306px; }
+.inv-sum__row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 12px; color: #6f6f66; }
+.inv-sum__row span:last-child { font-family: var(--font-mono); font-size: 11.5px; color: #3d3d37; }
+.inv-sum__row--disc span:last-child { color: #3e7a4d; }
+.inv-sum__row--total {
+  border-top: 1.5px solid #1a1a17; margin-top: 8px; padding-top: 10px;
+  color: #1a1a17; font-weight: 600;
+}
+.inv-sum__row--total span:last-child { font-family: var(--font-display); font-size: 21px; font-weight: 500; letter-spacing: -.02em; }
+
+.inv-words {
+  margin: 8px 30px 0; padding: 9px 12px;
+  background: #fbf9f4; border: 1px dashed #e6e0d4; border-radius: 7px;
+  font-size: 10.5px; color: #6f6f66; font-style: italic;
+}
+.inv-words b { font-style: normal; color: #1a1a17; font-weight: 600; }
+
+.inv-foot {
+  display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  padding: 22px 30px 26px; margin-top: 14px;
+  border-top: 1px solid #e6e0d4;
+}
+.inv-terms { font-size: 10px; color: #9a9a90; line-height: 1.7; max-width: 300px; }
+.inv-terms strong { color: #3d3d37; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+.inv-stamp { text-align: right; }
+.inv-stamp .paid {
+  display: inline-block; font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 700; color: #3e7a4d; border: 2px solid #3e7a4d;
+  padding: 5px 12px; border-radius: 4px; transform: rotate(-4deg);
+  opacity: .85;
+}
+.inv-stamp .sig { margin-top: 26px; font-size: 10px; color: #9a9a90; }
+.inv-stamp .sig::before { content: ''; display: block; width: 128px; margin-left: auto; border-top: 1px solid #d6cdba; margin-bottom: 5px; }
+
+@media print {
+  body * { visibility: hidden !important; }
+  .print-area, .print-area * { visibility: visible !important; }
+  .print-area { position: absolute; inset: 0; padding: 0; margin: 0; background: #fff; }
+  .print-area .invoice-doc { border: none; border-radius: 0; }
+  .no-print { display: none !important; }
+  @page { margin: 12mm; }
+}
+
+/* ============================================================
+   Command palette / search panel
+   ============================================================ */
+.searchpanel {
+  position: fixed; top: 78px; left: 50%; transform: translateX(-50%);
+  z-index: 120; width: min(620px, calc(100vw - 40px));
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--sh-4);
+  overflow: hidden;
+  animation: pop .22s var(--ease-out);
+}
+.searchpanel__head { padding: 12px 16px 8px; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+.searchpanel__list { max-height: 380px; overflow-y: auto; padding: 0 8px 8px; }
+.sres {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 10px; border-radius: 8px; cursor: pointer;
+  transition: background .12s;
+}
+.sres:hover, .sres.is-cursor { background: var(--paper-2); }
+.sres__icon {
+  width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px;
+  display: grid; place-items: center;
+  background: var(--paper-2); color: var(--ink-mute);
+  border: 1px solid var(--line);
+}
+.sres__icon svg { width: 14px; height: 14px; }
+.sres__main { flex: 1; min-width: 0; }
+.sres__t { font-size: 12.5px; font-weight: 500; }
+.sres__s { font-size: 11px; color: var(--ink-faint); }
+.sres__k { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+
+/* ============================================================
+   Reports
+   ============================================================ */
+.hbar { display: flex; flex-direction: column; gap: 11px; }
+.hbar-row { display: grid; grid-template-columns: 138px 1fr 74px; gap: 12px; align-items: center; }
+.hbar-name { font-size: 12px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar-track { height: 8px; background: var(--paper-2); border-radius: 99px; overflow: hidden; border: 1px solid var(--line-soft); }
+.hbar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--brass), var(--brass-light)); transition: width .8s var(--ease-out); }
+.hbar-val { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-mute); text-align: right; }
+
+.statlist { display: flex; flex-direction: column; }
+.statrow { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--line-soft); gap: 14px; }
+.statrow:last-child { border-bottom: none; }
+.statrow .k { font-size: 12.5px; color: var(--ink-mute); display: flex; align-items: center; gap: 8px; }
+.statrow .v { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink); font-weight: 500; }
+
+/* ============================================================
+   Project brief (deck mirror)
+   ============================================================ */
+.brief-hero {
+  padding: 42px 40px;
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(201, 164, 90, .18), transparent 58%),
+    linear-gradient(155deg, #1a1b15, #2a2b21);
+  color: #f2f0e6;
+  margin-bottom: 16px;
+  position: relative; overflow: hidden;
+  border: 1px solid #33352a;
+}
+.brief-hero::after {
+  content: 'BK';
+  position: absolute; right: -10px; bottom: -46px;
+  font-family: var(--font-display); font-size: 190px; font-weight: 300;
+  color: rgba(201, 164, 90, .05); letter-spacing: -.05em;
+  pointer-events: none; line-height: 1;
+}
+.brief-hero h1 { font-family: var(--font-display); font-size: 40px; font-weight: 350; letter-spacing: -.025em; line-height: 1.05; max-width: 20ch; }
+.brief-hero .lede { font-size: 14px; color: rgba(233, 231, 221, .66); margin-top: 14px; max-width: 62ch; line-height: 1.65; }
+.brief-hero .team { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 22px; position: relative; z-index: 1; }
+.brief-hero .team span {
+  font-size: 11px; padding: 4px 10px; border-radius: 99px;
+  background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1);
+  color: rgba(233, 231, 221, .78);
+}
+.brief-hero .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 18px; position: relative; z-index: 1; }
+.brief-hero .chips span {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+  padding: 4px 9px; border-radius: 5px;
+  background: rgba(201, 164, 90, .15); color: var(--brass-light);
+  border: 1px solid rgba(201, 164, 90, .22);
+}
+
+.brief-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.brief-card { padding: 22px; }
+.brief-card h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 400;
+  letter-spacing: -.01em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 9px;
+}
+.brief-card h3 .n {
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+  color: var(--brass-deep); background: var(--brass-wash);
+  border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+  border-radius: 4px; padding: 2px 5px; letter-spacing: .02em;
+}
+.brief-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.brief-card li {
+  font-size: 12.5px; color: var(--ink-soft); line-height: 1.55;
+  padding-left: 16px; position: relative;
+}
+.brief-card li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; border-radius: 1px;
+  background: var(--brass-light); transform: rotate(45deg);
+}
+.brief-card li b { color: var(--ink); font-weight: 550; }
+
+.flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; margin-top: 6px; }
+.flow__step {
+  flex: 1; min-width: 96px; padding: 11px 9px;
+  border: 1px solid var(--line); border-right: none;
+  background: var(--card-warm); position: relative;
+}
+.flow__step:first-child { border-radius: 8px 0 0 8px; }
+.flow__step:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid var(--line); }
+.flow__step .n { font-family: var(--font-mono); font-size: 9px; color: var(--brass-deep); font-weight: 600; }
+.flow__step .t { font-size: 11px; font-weight: 550; margin-top: 3px; color: var(--ink); line-height: 1.25; }
+
+.formula {
+  display: flex; flex-direction: column; gap: 7px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  color: var(--ink-soft);
+  background: var(--card-warm); border: 1px solid var(--line);
+  border-radius: 9px; padding: 13px;
+}
+.formula div { display: flex; justify-content: space-between; gap: 12px; }
+.formula div span:last-child { color: var(--brass-deep); font-weight: 500; }
+
+/* ============================================================
+   Settings
+   ============================================================ */
+.set-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.set-card { padding: 20px; }
+.set-card h3 { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+.set-card .desc { font-size: 11.5px; color: var(--ink-faint); margin-bottom: 16px; }
+.set-rows { display: flex; flex-direction: column; gap: 13px; }
+.set-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--line-soft); }
+.set-row:last-child { border-bottom: none; padding-bottom: 0; }
+.set-row .k { font-size: 12.5px; font-weight: 500; }
+.set-row .k small { display: block; font-size: 11px; color: var(--ink-faint); font-weight: 400; margin-top: 2px; }
+
+/* ============================================================
+   Misc
+   ============================================================ */
+.divider { height: 1px; background: var(--line-soft); margin: 14px 0; }
+.reveal { animation: reveal .5s var(--ease-out); }
+@keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { transform: none; opacity: 1; } }
+.reveal-2 { animation-delay: .06s; }
+.reveal-3 { animation-delay: .12s; }
+.reveal-4 { animation-delay: .18s; }
+
+.row { display: flex; align-items: center; gap: 8px; }
+.col { display: flex; flex-direction: column; gap: 4px; }
+.between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wrap { flex-wrap: wrap; }
+.mt-0 { margin-top: 0; } .mt-1 { margin-top: 8px; } .mt-2 { margin-top: 14px; } .mt-3 { margin-top: 22px; }
+.mb-2 { margin-bottom: 14px; }
+.grow { flex: 1; min-width: 0; }
+.trunc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1180px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-grid { grid-template-columns: 1fr; }
+  .composer { grid-template-columns: 1fr; }
+  .billpanel { position: static; }
+  .avail-row { grid-template-columns: 150px repeat(4, 1fr); }
+}
+@media (max-width: 900px) {
+  .rail {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    margin-left: calc(-1 * var(--rail-w));
+    box-shadow: var(--sh-4);
+  }
+  .rail.is-open { margin-left: 0; }
+  .topbar__menu { display: grid; }
+  .topbar { padding: 0 18px; gap: 12px; }
+  .topbar__date { display: none; }
+  .topbar__right .btn--ghost { display: none; }
+  .shell { padding: 24px 18px 80px; }
+  .pagehead__title { font-size: 25px; }
+  .grid-2, .brief-grid, .set-grid, .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: span 1; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .brief-hero { padding: 28px 24px; }
+  .brief-hero h1 { font-size: 30px; }
+  .inv-parties { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .svc-picker { grid-template-columns: 1fr; }
+  .slot-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar__search { display: none; }
+  .avail-row { grid-template-columns: 1fr 1fr; }
+  .avail-cell--name { grid-column: span 2; }
+  .hbar-row { grid-template-columns: 100px 1fr 62px; }
+  .drawer { width: 100vw; }
+  .toasts { left: 14px; right: 14px; align-items: stretch; }
+  .toast { max-width: none; }
+  .inv-head, .inv-parties, .inv-items, .inv-sum, .inv-foot { padding-left: 18px; padding-right: 18px; }
+  .inv-words { margin-left: 18px; margin-right: 18px; }
+  .line-row { grid-template-columns: 1fr 52px 76px 22px; }
+  .line-row .line-row__unit { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ─── Sidebar ─────────────────────────────────────────── -->
+  <aside class="rail" id="rail">
+    <div class="rail__brand">
+      <div class="monogram" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M20 4.5 34 12v16L20 35.5 6 28V12L20 4.5Z" stroke="currentColor" stroke-width="1.1" opacity=".55"/>
+          <path d="M20 11.5c4.7 3.3 7 7.1 7 11.2 0 3.6-3.1 5.8-7 5.8s-7-2.2-7-5.8c0-4.1 2.3-7.9 7-11.2Z" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="20" cy="23" r="2.1" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="rail__brand-text">
+        <span class="rail__name">Aurélia</span>
+        <span class="rail__sub">Reservations</span>
+      </div>
+    </div>
+
+    <nav class="rail__nav" id="railNav">
+      <p class="rail__label">Overview</p>
+      <a class="navitem" href="#/dashboard" data-view="dashboard">
+        <span class="navitem__icon" data-icon="grid"></span><span>Dashboard</span>
+      </a>
+
+      <p class="rail__label">Operations</p>
+      <a class="navitem" href="#/bookings" data-view="bookings">
+        <span class="navitem__icon" data-icon="calendar"></span><span>Bookings</span>
+        <em class="navitem__badge" id="navBookingBadge">0</em>
+      </a>
+      <a class="navitem" href="#/new" data-view="new">
+        <span class="navitem__icon" data-icon="plus"></span><span>New booking</span>
+      </a>
+      <a class="navitem" href="#/customers" data-view="customers">
+        <span class="navitem__icon" data-icon="users"></span><span>Customers</span>
+      </a>
+
+      <p class="rail__label">Finance</p>
+      <a class="navitem" href="#/invoices" data-view="invoices">
+        <span class="navitem__icon" data-icon="receipt"></span><span>Invoices</span>
+      </a>
+      <a class="navitem" href="#/payments" data-view="payments">
+        <span class="navitem__icon" data-icon="wallet"></span><span>Payments</span>
+      </a>
+      <a class="navitem" href="#/reports" data-view="reports">
+        <span class="navitem__icon" data-icon="chart"></span><span>Reports</span>
+      </a>
+
+      <p class="rail__label">System</p>
+      <a class="navitem" href="#/brief" data-view="brief">
+        <span class="navitem__icon" data-icon="book"></span><span>Project brief</span>
+      </a>
+      <a class="navitem" href="#/settings" data-view="settings">
+        <span class="navitem__icon" data-icon="sliders"></span><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="rail__foot">
+      <div class="rail__note">
+        <span class="dot dot--live"></span>
+        <div>
+          <strong>System online</strong>
+          <small>Java OOP model · v1.0</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── Main ────────────────────────────────────────────── -->
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn topbar__menu" id="menuBtn" aria-label="Toggle navigation" data-icon="menu"></button>
+      <div class="topbar__search">
+        <span data-icon="search"></span>
+        <input id="globalSearch" type="search" placeholder="Search bookings, guests, invoices…" autocomplete="off" />
+        <kbd>⌘K</kbd>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar__date" id="topbarDate"></div>
+        <button class="btn btn--ghost" id="printCtxBtn" data-icon="print" title="Print current invoice"></button>
+        <button class="btn btn--primary" data-action="new-booking">
+          <span data-icon="plus"></span> New booking
+        </button>
+      </div>
+    </header>
+
+    <main class="canvas" id="canvas" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- ─── Drawer / modal host ──────────────────────────────── -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Details"></aside>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="searchpanel" id="searchPanel" hidden></div>
+<div class="print-area" id="printArea"></div>
+
+<script>
+/* ============================================================
+   Billing engine — pure functions, mirrors the Bill class
+   Formula: subtotal -> discount -> taxable -> CGST + SGST -> total
+   ============================================================ */
+const Billing = (() => {
+  const GST_RATE = 0.18;
+  const round2 = (n) => Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+
+  function money(n, opts = {}) {
+    const value = Number(n) || 0;
+    const abs = Math.abs(value);
+    const str = abs.toLocaleString('en-IN', {
+      minimumFractionDigits: opts.compact ? 0 : 2,
+      maximumFractionDigits: opts.compact ? 0 : 2,
+    });
+    return (value < 0 ? '-' : '') + '₹' + str;
+  }
+
+  function compactMoney(n) {
+    const v = Number(n) || 0;
+    if (Math.abs(v) >= 10000000) return '₹' + (v / 10000000).toFixed(2) + ' Cr';
+    if (Math.abs(v) >= 100000) return '₹' + (v / 100000).toFixed(2) + ' L';
+    if (Math.abs(v) >= 1000) return '₹' + (v / 1000).toFixed(1) + 'k';
+    return '₹' + Math.round(v);
+  }
+
+  /**
+   * @param {Object} input
+   * @param {Array}  input.items        [{ name, qty, rate, unit }]
+   * @param {number} input.serviceCharge
+   * @param {Object} input.discount     { type: 'percent'|'flat', value }
+   * @param {number} input.gstRate
+   * @param {number} input.paid         amount already settled
+   */
+  function computeBill(input = {}) {
+    const items = (input.items || []).map((it) => {
+      const qty = Number(it.qty) || 0;
+      const rate = Number(it.rate) || 0;
+      return { ...it, qty, rate, amount: round2(qty * rate) };
+    });
+
+    const itemsTotal = round2(items.reduce((s, it) => s + it.amount, 0));
+    const serviceCharge = round2(input.serviceCharge || 0);
+    const subtotal = round2(itemsTotal + serviceCharge);
+
+    const d = input.discount || { type: 'percent', value: 0 };
+    const dValue = Number(d.value) || 0;
+    let discount = d.type === 'percent' ? round2((subtotal * dValue) / 100) : round2(dValue);
+    discount = Math.min(discount, subtotal);
+    discount = Math.max(discount, 0);
+
+    const taxable = round2(subtotal - discount);
+    const gstRate = input.gstRate === undefined ? GST_RATE : input.gstRate;
+    const cgst = round2((taxable * gstRate) / 2);
+    const sgst = round2((taxable * gstRate) / 2);
+    const tax = round2(cgst + sgst);
+    const total = round2(taxable + tax);
+
+    const paid = round2(input.paid || 0);
+    const balance = round2(Math.max(total - paid, 0));
+    const status = paid <= 0 ? 'pending' : balance <= 0.5 ? 'paid' : 'partial';
+
+    return {
+      items,
+      itemsTotal,
+      serviceCharge,
+      subtotal,
+      discountType: d.type,
+      discountValue: dValue,
+      discount,
+      taxable,
+      gstRate,
+      cgst,
+      sgst,
+      tax,
+      total,
+      paid,
+      balance,
+      paymentStatus: status,
+      effectiveRate: subtotal > 0 ? round2((total / subtotal - 1) * 100) : 0,
+    };
+  }
+
+  const ONES = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+    'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  function two(n) {
+    if (n < 20) return ONES[n];
+    const t = TENS[Math.floor(n / 10)];
+    const o = ONES[n % 10];
+    return o ? t + ' ' + o : t;
+  }
+  function three(n) {
+    let s = '';
+    if (n > 99) {
+      s += ONES[Math.floor(n / 100)] + ' Hundred';
+      n %= 100;
+      if (n) s += ' ';
+    }
+    if (n) s += two(n);
+    return s;
+  }
+
+  function amountInWords(amount) {
+    const value = round2(amount);
+    let rupees = Math.floor(value);
+    const paise = Math.round((value - rupees) * 100);
+    if (rupees === 0 && paise === 0) return 'Zero Rupees Only';
+
+    const parts = [];
+    const crore = Math.floor(rupees / 10000000); rupees %= 10000000;
+    const lakh = Math.floor(rupees / 100000); rupees %= 100000;
+    const thousand = Math.floor(rupees / 1000); rupees %= 1000;
+
+    if (crore) parts.push(three(crore) + ' Crore');
+    if (lakh) parts.push(three(lakh) + ' Lakh');
+    if (thousand) parts.push(three(thousand) + ' Thousand');
+    if (rupees) parts.push(three(rupees));
+
+    let words = parts.join(' ').replace(/\s+/g, ' ').trim();
+    words += ' Rupees';
+    if (paise) words += ' and ' + two(paise) + ' Paise';
+    return words + ' Only';
+  }
+
+  return { GST_RATE, round2, money, compactMoney, computeBill, amountInWords };
+})();
+
+</script>
+<script>
+/* ============================================================
+   Store — domain model (Customer, Service, Booking, Bill, Payment)
+   Mirrors the OOP design in the project deck. Persists to localStorage.
+   ============================================================ */
+const Store = (() => {
+  const KEY = 'aurelia.booking.v1';
+
+  const SLOTS = [
+    { id: 'MORN', label: 'Morning', time: '09:00 – 12:00' },
+    { id: 'AFTN', label: 'Afternoon', time: '12:00 – 16:00' },
+    { id: 'EVEN', label: 'Evening', time: '16:00 – 20:00' },
+    { id: 'NIGHT', label: 'Night', time: '20:00 – 23:00' },
+  ];
+
+  const SERVICES = [
+    { id: 'SV-01', name: 'Deluxe Room', category: 'Stay', rate: 4500, unit: 'night', capacity: 2, icon: 'bed', tint: 'sage' },
+    { id: 'SV-02', name: 'Premium Suite', category: 'Stay', rate: 9800, unit: 'night', capacity: 3, icon: 'crown', tint: 'brass' },
+    { id: 'SV-03', name: 'Banquet Hall', category: 'Event', rate: 65000, unit: 'event', capacity: 250, icon: 'sparkle', tint: 'plum' },
+    { id: 'SV-04', name: 'Conference Room', category: 'Event', rate: 12000, unit: 'session', capacity: 40, icon: 'board', tint: 'ocean' },
+    { id: 'SV-05', name: 'Poolside Cabana', category: 'Leisure', rate: 3200, unit: 'day', capacity: 6, icon: 'sun', tint: 'ocean' },
+    { id: 'SV-06', name: 'Signature Spa Ritual', category: 'Leisure', rate: 5400, unit: 'session', capacity: 2, icon: 'leaf', tint: 'sage' },
+    { id: 'SV-07', name: 'Chef’s Table Dining', category: 'Dining', rate: 3800, unit: 'guest', capacity: 12, icon: 'cup', tint: 'plum' },
+    { id: 'SV-08', name: 'Airport Transfer', category: 'Travel', rate: 2200, unit: 'trip', capacity: 4, icon: 'car', tint: 'brass' },
+  ];
+
+  const ADDONS = [
+    { id: 'AD-01', name: 'Welcome Decoration', rate: 1500, unit: 'flat' },
+    { id: 'AD-02', name: 'Photography Coverage', rate: 8500, unit: 'flat' },
+    { id: 'AD-03', name: 'Live Music Ensemble', rate: 11000, unit: 'flat' },
+    { id: 'AD-04', name: 'Extra Bed', rate: 900, unit: 'unit' },
+    { id: 'AD-05', name: 'Airport Pickup', rate: 2200, unit: 'trip' },
+    { id: 'AD-06', name: 'Late Checkout', rate: 1200, unit: 'flat' },
+  ];
+
+  const SETTINGS = {
+    business: 'Aurélia Resort & Banquet',
+    tagline: 'Reservations · Billing · Payments',
+    address: '12 Marine Crescent, Kochi, Kerala 682001',
+    phone: '+91 484 400 1932',
+    email: 'reservations@aurelia.example',
+    gstin: '32ABCDE1234F1Z5',
+    gstRate: 0.18,
+    currency: 'INR',
+  };
+
+  const pad4 = (n) => String(n).padStart(4, '0');
+  const todayISO = () => new Date().toISOString().slice(0, 10);
+  const addDays = (iso, days) => {
+    const d = new Date(iso + 'T00:00:00');
+    d.setDate(d.getDate() + days);
+    return d.toISOString().slice(0, 10);
+  };
+
+  let state = null;
+
+  function blank() {
+    return {
+      customers: [],
+      bookings: [],
+      payments: [],
+      counter: { booking: 1023, customer: 0, payment: 0 },
+      settings: { ...SETTINGS },
+      seeded: false,
+    };
+  }
+
+  function seed(s) {
+    const people = [
+      { name: 'Ananya Menon', phone: '+91 98470 21143', email: 'ananya.menon@example.com', city: 'Kochi', tier: 'Gold' },
+      { name: 'Rohit Sharma', phone: '+91 99610 88204', email: 'rohit.sharma@example.com', city: 'Bengaluru', tier: 'Platinum' },
+      { name: 'Meera Krishnan', phone: '+91 94470 55108', email: 'meera.k@example.com', city: 'Thrissur', tier: 'Silver' },
+      { name: 'Arjun Nair', phone: '+91 97440 31277', email: 'arjun.nair@example.com', city: 'Kozhikode', tier: 'Gold' },
+      { name: 'Divya Pillai', phone: '+91 90370 66412', email: 'divya.pillai@example.com', city: 'Kochi', tier: 'Silver' },
+      { name: 'Karthik Iyer', phone: '+91 98950 10238', email: 'karthik.iyer@example.com', city: 'Chennai', tier: 'Platinum' },
+      { name: 'Sneha Thomas', phone: '+91 94950 77301', email: 'sneha.thomas@example.com', city: 'Kottayam', tier: 'Gold' },
+      { name: 'Vikram Reddy', phone: '+91 90000 45812', email: 'vikram.reddy@example.com', city: 'Hyderabad', tier: 'Silver' },
+    ];
+    people.forEach((p, i) => {
+      s.customers.push({ id: 'CU-' + pad4(i + 1), ...p, notes: '', createdAt: addDays(todayISO(), -90 + i * 4) });
+    });
+    s.counter.customer = people.length;
+
+    const plans = [
+      { c: 0, svc: 'SV-03', offset: 24, slot: 'EVEN', qty: 1, guests: 180, status: 'confirmed', addons: ['AD-01', 'AD-02'], disc: 8, paidRatio: 1 },
+      { c: 1, svc: 'SV-02', offset: 3, slot: 'AFTN', qty: 2, guests: 2, status: 'confirmed', addons: ['AD-04'], disc: 5, paidRatio: 0.5 },
+      { c: 2, svc: 'SV-06', offset: 1, slot: 'MORN', qty: 1, guests: 2, status: 'confirmed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 3, svc: 'SV-01', offset: 6, slot: 'NIGHT', qty: 3, guests: 2, status: 'pending', addons: ['AD-06'], disc: 0, paidRatio: 0 },
+      { c: 4, svc: 'SV-04', offset: 2, slot: 'MORN', qty: 1, guests: 32, status: 'confirmed', addons: ['AD-05'], disc: 10, paidRatio: 1 },
+      { c: 5, svc: 'SV-07', offset: -2, slot: 'EVEN', qty: 4, guests: 4, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 6, svc: 'SV-05', offset: 8, slot: 'AFTN', qty: 1, guests: 5, status: 'pending', addons: [], disc: 5, paidRatio: 0 },
+      { c: 7, svc: 'SV-02', offset: -6, slot: 'EVEN', qty: 1, guests: 2, status: 'completed', addons: ['AD-02', 'AD-03'], disc: 12, paidRatio: 1 },
+      { c: 1, svc: 'SV-08', offset: -12, slot: 'NIGHT', qty: 2, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 2, svc: 'SV-01', offset: -18, slot: 'AFTN', qty: 1, guests: 1, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 0, svc: 'SV-04', offset: -24, slot: 'MORN', qty: 2, guests: 25, status: 'completed', addons: ['AD-05'], disc: 5, paidRatio: 1 },
+      { c: 4, svc: 'SV-07', offset: -30, slot: 'NIGHT', qty: 2, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 6, svc: 'SV-03', offset: -40, slot: 'EVEN', qty: 1, guests: 140, status: 'completed', addons: ['AD-01'], disc: 0, paidRatio: 1 },
+      { c: 3, svc: 'SV-06', offset: -52, slot: 'AFTN', qty: 2, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 5, svc: 'SV-01', offset: 12, slot: 'EVEN', qty: 2, guests: 3, status: 'confirmed', addons: [], disc: 0, paidRatio: 0.35 },
+      { c: 1, svc: 'SV-03', offset: -48, slot: 'EVEN', qty: 1, guests: 210, status: 'completed', addons: ['AD-01', 'AD-02', 'AD-03'], disc: 10, paidRatio: 1 },
+      { c: 0, svc: 'SV-02', offset: -58, slot: 'MORN', qty: 2, guests: 2, status: 'completed', addons: ['AD-04'], disc: 5, paidRatio: 1 },
+      { c: 6, svc: 'SV-04', offset: -63, slot: 'AFTN', qty: 1, guests: 28, status: 'completed', addons: ['AD-05'], disc: 0, paidRatio: 1 },
+      { c: 4, svc: 'SV-01', offset: -71, slot: 'NIGHT', qty: 2, guests: 2, status: 'completed', addons: ['AD-06'], disc: 0, paidRatio: 1 },
+      { c: 7, svc: 'SV-06', offset: -78, slot: 'MORN', qty: 1, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 2, svc: 'SV-03', offset: -86, slot: 'EVEN', qty: 1, guests: 160, status: 'completed', addons: ['AD-01'], disc: 12, paidRatio: 1 },
+      { c: 5, svc: 'SV-07', offset: -94, slot: 'EVEN', qty: 6, guests: 6, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 0, svc: 'SV-05', offset: -103, slot: 'AFTN', qty: 2, guests: 8, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 3, svc: 'SV-08', offset: -112, slot: 'NIGHT', qty: 3, guests: 3, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 6, svc: 'SV-02', offset: -121, slot: 'EVEN', qty: 1, guests: 2, status: 'completed', addons: ['AD-02'], disc: 8, paidRatio: 1 },
+      { c: 1, svc: 'SV-04', offset: -132, slot: 'MORN', qty: 2, guests: 30, status: 'completed', addons: ['AD-05'], disc: 5, paidRatio: 1 },
+      { c: 4, svc: 'SV-01', offset: -141, slot: 'AFTN', qty: 3, guests: 4, status: 'completed', addons: ['AD-04'], disc: 0, paidRatio: 1 },
+      { c: 7, svc: 'SV-03', offset: -152, slot: 'EVEN', qty: 1, guests: 120, status: 'completed', addons: ['AD-03'], disc: 0, paidRatio: 1 },
+      { c: 2, svc: 'SV-07', offset: -160, slot: 'NIGHT', qty: 2, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+      { c: 5, svc: 'SV-06', offset: -168, slot: 'MORN', qty: 2, guests: 2, status: 'completed', addons: [], disc: 0, paidRatio: 1 },
+    ];
+
+    plans.forEach((p, i) => {
+      const service = SERVICES.find((x) => x.id === p.svc);
+      const date = addDays(todayISO(), p.offset);
+      const bookingId = 'BK-' + pad4(++s.counter.booking);
+      const items = [{ name: service.name, qty: p.qty, rate: service.rate, unit: service.unit }];
+      p.addons.forEach((aid) => {
+        const a = ADDONS.find((x) => x.id === aid);
+        const qty = a.unit === 'unit' || a.unit === 'trip' ? p.qty : 1;
+        items.push({ name: a.name, qty, rate: a.rate, unit: a.unit });
+      });
+      const gross = items.reduce((t, it) => t + it.qty * it.rate, 0);
+      const discount = Billing.round2((gross * p.disc) / 100);
+      const total = Billing.round2((gross - discount) * (1 + s.settings.gstRate));
+      const paid = Billing.round2(total * p.paidRatio);
+
+      s.bookings.push({
+        id: bookingId,
+        customerId: s.customers[p.c].id,
+        serviceId: service.id,
+        date,
+        slot: p.slot,
+        qty: p.qty,
+        guests: p.guests,
+        status: p.status,
+        notes: '',
+        createdAt: addDays(date, -3),
+        items,
+        discount: { type: 'percent', value: p.disc },
+        gstRate: s.settings.gstRate,
+        serviceCharge: 0,
+      });
+
+      if (paid > 0) {
+        s.payments.push({
+          id: 'PM-' + pad4(++s.counter.payment),
+          bookingId,
+          amount: paid,
+          method: i % 4 === 0 ? 'UPI' : i % 4 === 1 ? 'Card' : i % 4 === 2 ? 'Bank Transfer' : 'Cash',
+          reference: 'TXN' + (7420193 + i * 1337),
+          date,
+          note: paid >= total ? 'Full settlement' : 'Advance payment',
+        });
+      }
+    });
+
+    s.seeded = true;
+    return s;
+  }
+
+  function load() {
+    if (state) return;
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.bookings) && Array.isArray(parsed.customers)) {
+          parsed.payments = parsed.payments || [];
+          parsed.settings = { ...SETTINGS, ...(parsed.settings || {}) };
+          parsed.counter = parsed.counter || { booking: 1023, customer: 0, payment: 0 };
+          state = parsed;
+          return;
+        }
+      }
+    } catch (e) { /* storage unavailable — run in memory */ }
+    state = seed(blank());
+    save();
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage full or blocked */ }
+  }
+
+  function getState() { load(); return state; }
+
+  const settings = () => getState().settings;
+  const customers = () => getState().customers;
+  const bookings = () => getState().bookings;
+  const payments = () => getState().payments;
+  const services = () => SERVICES;
+  const addons = () => ADDONS;
+  const slots = () => SLOTS;
+
+  const customerById = (id) => getState().customers.find((c) => c.id === id) || null;
+  const bookingById = (id) => getState().bookings.find((b) => b.id === id) || null;
+  const serviceById = (id) => SERVICES.find((s) => s.id === id) || null;
+  const slotById = (id) => SLOTS.find((s) => s.id === id) || null;
+
+  function paymentsFor(bookingId) {
+    return getState().payments.filter((p) => p.bookingId === bookingId);
+  }
+
+  function billFor(booking) {
+    if (!booking) return null;
+    const paid = Billing.round2(paymentsFor(booking.id).reduce((s, p) => s + Number(p.amount || 0), 0));
+    return Billing.computeBill({
+      items: booking.items || [],
+      serviceCharge: booking.serviceCharge || 0,
+      discount: booking.discount || { type: 'percent', value: 0 },
+      gstRate: booking.gstRate === undefined ? settings().gstRate : booking.gstRate,
+      paid,
+    });
+  }
+
+  function createCustomer(data) {
+    const s = getState();
+    const customer = {
+      id: 'CU-' + pad4(++s.counter.customer),
+      name: String(data.name || '').trim(),
+      phone: String(data.phone || '').trim(),
+      email: String(data.email || '').trim(),
+      city: String(data.city || '').trim(),
+      tier: data.tier || 'Silver',
+      notes: data.notes || '',
+      createdAt: todayISO(),
+    };
+    s.customers.push(customer);
+    save();
+    return customer;
+  }
+
+  function updateCustomer(id, data) {
+    const s = getState();
+    const c = s.customers.find((x) => x.id === id);
+    if (!c) return null;
+    Object.assign(c, data);
+    save();
+    return c;
+  }
+
+  function isSlotTaken(serviceId, date, slot, ignoreBookingId) {
+    return getState().bookings.some(
+      (b) => b.serviceId === serviceId && b.date === date && b.slot === slot &&
+        b.status !== 'cancelled' && b.id !== ignoreBookingId
+    );
+  }
+
+  function createBooking(data) {
+    const s = getState();
+    const booking = {
+      id: 'BK-' + pad4(++s.counter.booking),
+      customerId: data.customerId,
+      serviceId: data.serviceId,
+      date: data.date,
+      slot: data.slot,
+      qty: Number(data.qty) || 1,
+      guests: Number(data.guests) || 1,
+      status: data.status || 'confirmed',
+      notes: data.notes || '',
+      createdAt: todayISO(),
+      items: data.items || [],
+      discount: data.discount || { type: 'percent', value: 0 },
+      gstRate: s.settings.gstRate,
+      serviceCharge: Number(data.serviceCharge) || 0,
+    };
+    s.bookings.push(booking);
+    save();
+    return booking;
+  }
+
+  function updateBooking(id, patch) {
+    const s = getState();
+    const b = s.bookings.find((x) => x.id === id);
+    if (!b) return null;
+    Object.assign(b, patch);
+    save();
+    return b;
+  }
+
+  const setBookingStatus = (id, status) => updateBooking(id, { status });
+
+  function deleteBooking(id) {
+    const s = getState();
+    const i = s.bookings.findIndex((b) => b.id === id);
+    if (i === -1) return false;
+    s.bookings.splice(i, 1);
+    s.payments = s.payments.filter((p) => p.bookingId !== id);
+    save();
+    return true;
+  }
+
+  function recordPayment(bookingId, { amount, method, reference, note, date }) {
+    const s = getState();
+    const payment = {
+      id: 'PM-' + pad4(++s.counter.payment),
+      bookingId,
+      amount: Billing.round2(Number(amount) || 0),
+      method: method || 'Cash',
+      reference: reference || 'TXN' + Math.floor(1000000 + Math.random() * 8999999),
+      date: date || todayISO(),
+      note: note || '',
+    };
+    s.payments.push(payment);
+    const booking = s.bookings.find((b) => b.id === bookingId);
+    if (booking) {
+      const bill = billFor(booking);
+      if (bill && bill.balance <= 0.5) booking.status = 'completed';
+    }
+    save();
+    return payment;
+  }
+
+  function updateSettings(patch) {
+    const s = getState();
+    s.settings = { ...s.settings, ...patch };
+    save();
+    return s.settings;
+  }
+
+  function reset() {
+    try { localStorage.removeItem(KEY); } catch (e) { /* noop */ }
+    state = seed(blank());
+    save();
+    return state;
+  }
+
+  function analytics() {
+    const s = getState();
+    const rows = s.bookings.map((b) => ({ booking: b, bill: billFor(b) }));
+    const active = rows.filter((x) => x.booking.status !== 'cancelled');
+    const revenue = Billing.round2(active.reduce((t, x) => t + (x.bill ? x.bill.total : 0), 0));
+    const collected = Billing.round2(active.reduce((t, x) => t + (x.bill ? x.bill.paid : 0), 0));
+    const outstanding = Billing.round2(Math.max(revenue - collected, 0));
+    const gst = Billing.round2(active.reduce((t, x) => t + (x.bill ? x.bill.tax : 0), 0));
+    const today = todayISO();
+
+    const byService = {};
+    active.forEach((x) => {
+      const svc = serviceById(x.booking.serviceId);
+      if (!svc) return;
+      if (!byService[svc.id]) byService[svc.id] = { service: svc, count: 0, revenue: 0 };
+      byService[svc.id].count += 1;
+      byService[svc.id].revenue += x.bill ? x.bill.total : 0;
+    });
+
+    const byMethod = {};
+    s.payments.forEach((p) => {
+      byMethod[p.method] = (byMethod[p.method] || 0) + Number(p.amount || 0);
+    });
+
+    const months = {};
+    active.forEach((x) => {
+      const key = (x.booking.date || '').slice(0, 7);
+      if (!key) return;
+      if (!months[key]) months[key] = { key, revenue: 0, count: 0 };
+      months[key].revenue += x.bill ? x.bill.total : 0;
+      months[key].count += 1;
+    });
+
+    return {
+      revenue,
+      collected,
+      outstanding,
+      gst,
+      totalBookings: active.length,
+      todayCount: active.filter((x) => x.booking.date === today).length,
+      upcomingCount: active.filter((x) => x.booking.date >= today).length,
+      pendingCount: active.filter((x) => x.booking.status === 'pending').length,
+      completedCount: active.filter((x) => x.booking.status === 'completed').length,
+      customers: s.customers.length,
+      byService: Object.values(byService).sort((a, b) => b.revenue - a.revenue),
+      byMethod: Object.entries(byMethod).map(([method, amount]) => ({ method, amount })).sort((a, b) => b.amount - a.amount),
+      months: Object.values(months).sort((a, b) => a.key.localeCompare(b.key)),
+    };
+  }
+
+  return {
+    SLOTS, SERVICES, ADDONS,
+    getState, settings, customers, bookings, payments, services, addons, slots,
+    customerById, bookingById, serviceById, slotById, paymentsFor, billFor,
+    createCustomer, updateCustomer, createBooking, updateBooking, setBookingStatus,
+    deleteBooking, recordPayment, isSlotTaken, updateSettings, reset, analytics,
+    todayISO, addDays,
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   Aurélia — application controller
+   Router · views · drawers · modals · billing interactions
+   ============================================================ */
+(() => {
+  'use strict';
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+  /* ── Icons ─────────────────────────────────────────────── */
+  const ICONS = {
+    grid: '<rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/>',
+    calendar: '<rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 3v3.5M16 3v3.5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    users: '<circle cx="9" cy="8" r="3.2"/><path d="M2.8 20c0-3.4 2.8-5.6 6.2-5.6s6.2 2.2 6.2 5.6"/><path d="M16.4 5.4a3 3 0 0 1 0 5.6M17.6 14.8c2.2.5 3.6 2.2 3.6 4.6"/>',
+    receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9.5 8h5M9.5 12h5"/>',
+    wallet: '<rect x="2.8" y="6" width="18.4" height="13" rx="2.4"/><path d="M2.8 10h18.4"/><circle cx="17" cy="14.4" r="1.2"/>',
+    chart: '<path d="M4 20V11M10 20V4.5M16 20v-6.5M22 20H2"/>',
+    book: '<path d="M4 4.5A1.8 1.8 0 0 1 5.8 3H19v18H5.8A1.8 1.8 0 0 1 4 19.2V4.5Z"/><path d="M4 17h15"/><path d="M8 7.5h7"/>',
+    sliders: '<path d="M4 8h6M14 8h6M4 16h10M18 16h2"/><circle cx="12" cy="8" r="2"/><circle cx="16" cy="16" r="2"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    print: '<path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="7.5" rx="2"/><path d="M7 14h10v6.5H7z"/>',
+    bed: '<path d="M3 18v-9M3 13h18v5M21 18v-5a3 3 0 0 0-3-3h-8v3"/><circle cx="7" cy="10.5" r="1.8"/>',
+    crown: '<path d="m3 7 4 4 5-6 5 6 4-4-2 11H5L3 7Z"/><path d="M5.5 18h13"/>',
+    sparkle: '<path d="M12 3.5c.7 4.2 2.3 5.8 6.5 6.5-4.2.7-5.8 2.3-6.5 6.5-.7-4.2-2.3-5.8-6.5-6.5C9.7 9.3 11.3 7.7 12 3.5Z"/><path d="M18 16.5c.3 1.8 1 2.5 2.8 2.8-1.8.3-2.5 1-2.8 2.8"/>',
+    board: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21l2-4M16 21l-2-4M7.5 8.5h6M7.5 12h9"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/>',
+    leaf: '<path d="M20 4C10 4 4 8.5 4 15.5c0 2.5 1.5 4.5 4 4.5 7 0 12-6 12-16Z"/><path d="M4.5 20C7 14.5 11 11 16 9"/>',
+    cup: '<path d="M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M16 9.5h2.2a2.3 2.3 0 0 1 0 4.6H16"/><path d="M6 4.5h8"/>',
+    car: '<path d="M3 15.5V12l2-5h14l2 5v3.5"/><path d="M3 15.5h18"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+    x: '<path d="M6 6l12 12M18 6 6 18"/>',
+    check: '<path d="M20 6.5 9.2 17.3 4 12.1"/>',
+    up: '<path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/>',
+    down: '<path d="M12 5v14M5.5 12.5 12 19l6.5-6.5"/>',
+    trash: '<path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>',
+    edit: '<path d="M4 20h4l10-10-4-4L4 16v4Z"/><path d="m14 6 4 4"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2.2"/><path d="m4 7 8 6 8-6"/>',
+    phone: '<path d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z"/>',
+    pin: '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+    card: '<rect x="2.5" y="5" width="19" height="14" rx="2.4"/><path d="M2.5 9.5h19"/>',
+    cash: '<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/>',
+    bank: '<path d="m3 9.5 9-5.5 9 5.5"/><path d="M5 10v8M10 10v8M14 10v8M19 10v8M3 20.5h18"/>',
+    download: '<path d="M12 3.5v11M7.5 10.5 12 15l4.5-4.5"/><path d="M4 18.5h16"/>',
+    filter: '<path d="M3 5.5h18l-7 8V20l-4-2.5v-4L3 5.5Z"/>',
+    right: '<path d="m9 5.5 6.5 6.5L9 18.5"/>',
+    left: '<path d="m15 5.5-6.5 6.5L15 18.5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.4l3.4 2"/>',
+    alert: '<path d="M12 3.5 22 20H2L12 3.5Z"/><path d="M12 9.5v4.5M12 17h.01"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/>',
+    refresh: '<path d="M20 11a8 8 0 1 0-2.5 6.5"/><path d="M20 4.5V11h-6.2"/>',
+    moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/>',
+    user: '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c0-3.9 3.3-6.5 7.5-6.5s7.5 2.6 7.5 6.5"/>',
+    copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 5.5h-9a2 2 0 0 0-2 2v9"/>',
+  };
+
+  const icon = (name, cls = '') =>
+    `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+
+  function hydrateIcons(root = document) {
+    $$('[data-icon]', root).forEach((el) => {
+      if (el.dataset.hydrated === '1') return;
+      el.innerHTML = icon(el.dataset.icon);
+      el.dataset.hydrated = '1';
+    });
+  }
+
+  /* ── Formatting ────────────────────────────────────────── */
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  function parseISO(iso) { return new Date(iso + 'T00:00:00'); }
+  function fmtDate(iso, style = 'medium') {
+    if (!iso) return '—';
+    const d = parseISO(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    if (style === 'short') return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+    if (style === 'long') return `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+    return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  }
+  function fmtMonth(key) {
+    if (!key) return '';
+    const [y, m] = key.split('-');
+    return `${MONTHS[Number(m) - 1]} ${y.slice(2)}`;
+  }
+  const initials = (name) => String(name || '')
+    .split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
+  const AV_TONES = ['', 'avatar--brass', 'avatar--ocean', 'avatar--plum'];
+  const toneFor = (str) => AV_TONES[Math.abs(String(str).split('').reduce((a, c) => a + c.charCodeAt(0), 0)) % AV_TONES.length];
+
+  const statusPill = (status) => {
+    const map = { confirmed: 'Confirmed', pending: 'Pending', completed: 'Completed', cancelled: 'Cancelled' };
+    return `<span class="pill pill--${status}">${map[status] || status}</span>`;
+  };
+  const payPill = (status) => {
+    const map = { paid: 'Paid', partial: 'Part paid', pending: 'Unpaid' };
+    return `<span class="pill pill--${status === 'pending' ? 'cancelled' : status}">${map[status] || status}</span>`;
+  };
+
+  /* ── App state ─────────────────────────────────────────── */
+  const ui = {
+    route: 'dashboard',
+    filterStatus: 'all',
+    filterQ: '',
+    invoiceMonth: '',
+    currentInvoice: null,
+    searchOpen: false,
+    searchCursor: 0,
+  };
+
+  const toast = (msg, tone = 'ok') => {
+    const host = $('#toasts');
+    const el = document.createElement('div');
+    el.className = `toast toast--${tone}`;
+    el.innerHTML = `<span class="toast__icon">${icon(tone === 'bad' ? 'alert' : 'check')}</span><span>${esc(msg)}</span>`;
+    host.appendChild(el);
+    setTimeout(() => {
+      el.classList.add('is-out');
+      setTimeout(() => el.remove(), 280);
+    }, 3400);
+  };
+
+  /* ── Shared fragments ──────────────────────────────────── */
+  function customerCell(id, sub) {
+    const c = Store.customerById(id);
+    const name = c ? c.name : 'Unknown guest';
+    const meta = sub !== undefined ? sub : c ? c.phone : '';
+    const tone = toneFor(name);
+    return `<div class="who">
+      <div class="avatar ${tone}">${esc(initials(name))}</div>
+      <div><div class="who__name">${esc(name)}</div><div class="who__meta">${esc(meta)}</div></div>
+    </div>`;
+  }
+
+  function emptyState(iconName, title, copy, action) {
+    return `<div class="empty">
+      <div class="empty__icon">${icon(iconName)}</div>
+      <h4>${esc(title)}</h4>
+      <p>${esc(copy)}</p>
+      ${action || ''}
+    </div>`;
+  }
+
+  const pageHead = (title, sub, actions = '') => `
+    <div class="pagehead">
+      <div>
+        <div class="eyebrow">${esc(Store.settings().business)}</div>
+        <h1 class="display pagehead__title" style="margin-top:9px">${esc(title)}</h1>
+        <p class="pagehead__sub">${esc(sub)}</p>
+      </div>
+      <div class="pagehead__actions">${actions}</div>
+    </div>`;
+
+  /* ── Charts ────────────────────────────────────────────── */
+  const CHART_COLORS = ['#a9822f', '#4b6b52', '#2f5d70', '#6b3f5e', '#a4503a', '#8a8a5e'];
+
+  function donutSVG(data, size = 138, thickness = 15) {
+    const total = data.reduce((s, d) => s + d.value, 0) || 1;
+    const r = (size - thickness) / 2;
+    const c = 2 * Math.PI * r;
+    let offset = 0;
+    const segs = data.map((d) => {
+      const len = (d.value / total) * c;
+      const seg = `<circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${d.color}" stroke-width="${thickness}" stroke-dasharray="${len} ${c - len}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${size / 2} ${size / 2})"/>`;
+      offset += len;
+      return seg;
+    }).join('');
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img">${segs}</svg>`;
+  }
+
+  function sparkline(values, w = 190, h = 54) {
+    if (!values.length) return '';
+    const max = Math.max(...values, 1);
+    const min = Math.min(...values, 0);
+    const span = max - min || 1;
+    const step = values.length > 1 ? w / (values.length - 1) : w;
+    const pts = values.map((v, i) => [i * step, h - ((v - min) / span) * (h - 8) - 4]);
+    const line = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+    const area = `${line} L${w},${h} L0,${h} Z`;
+    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="none" aria-hidden="true">
+      <defs><linearGradient id="sparkg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c9a45a" stop-opacity=".34"/>
+        <stop offset="100%" stop-color="#c9a45a" stop-opacity="0"/>
+      </linearGradient></defs>
+      <path d="${area}" fill="url(#sparkg)"/>
+      <path d="${line}" fill="none" stroke="#c9a45a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+
+  /* ── Data helpers ──────────────────────────────────────── */
+  function billsList() {
+    return Store.bookings().map((b) => ({
+      booking: b,
+      bill: Store.billFor(b),
+      customer: Store.customerById(b.customerId),
+      service: Store.serviceById(b.serviceId),
+    }));
+  }
+
+  function lastMonthKeys(n) {
+    const out = [];
+    const now = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      out.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+    }
+    return out;
+  }
+
+  /* ============================================================
+     VIEW · Dashboard
+     ============================================================ */
+  function viewDashboard() {
+    const a = Store.analytics();
+    const months = lastMonthKeys(6).map((k) => {
+      const found = a.months.find((m) => m.key === k);
+      return { key: k, revenue: found ? found.revenue : 0, count: found ? found.count : 0 };
+    });
+    const maxRev = Math.max(...months.map((m) => m.revenue), 1);
+
+    const upcoming = billsList()
+      .filter((r) => r.booking.status !== 'cancelled' && r.booking.date >= Store.todayISO())
+      .sort((x, y) => (x.booking.date + x.booking.slot).localeCompare(y.booking.date + y.booking.slot))
+      .slice(0, 5);
+
+    const recent = billsList()
+      .sort((x, y) => (y.booking.createdAt || '').localeCompare(x.booking.createdAt || ''))
+      .slice(0, 6);
+
+    const tomorrow = Store.addDays(Store.todayISO(), 1);
+    const availServices = Store.services().slice(0, 5);
+
+    const growth = months.length >= 2 && months[months.length - 2].revenue > 0
+      ? ((months[months.length - 1].revenue - months[months.length - 2].revenue) / months[months.length - 2].revenue) * 100
+      : 0;
+
+    return `<div class="shell">
+      ${pageHead('Revenue console', 'Live position across reservations, billing and settlement.', `
+        <button class="btn btn--ghost" data-action="export"><span data-icon="download"></span> Export</button>
+        <button class="btn btn--primary" data-action="new-booking"><span data-icon="plus"></span> New booking</button>
+      `)}
+
+      <div class="kpi-grid">
+        <div class="kpi kpi--hero reveal">
+          <div class="kpi__label">Total billed</div>
+          <div class="kpi__value">${Billing.money(a.revenue)}</div>
+          <div class="kpi__foot">
+            <span class="delta ${growth >= 0 ? 'delta--up' : 'delta--down'}">${icon(growth >= 0 ? 'up' : 'down')} ${Math.abs(growth).toFixed(1)}%</span>
+            month on month · ${a.totalBookings} bookings
+          </div>
+          <div class="kpi__spark">${sparkline(months.map((m) => m.revenue))}</div>
+        </div>
+        <div class="kpi reveal reveal-2">
+          <div class="kpi__label">Collected</div>
+          <div class="kpi__value">${Billing.compactMoney(a.collected)}</div>
+          <div class="kpi__foot"><span class="delta delta--up">${icon('check')} ${Math.round((a.collected / (a.revenue || 1)) * 100)}%</span> of billed value</div>
+        </div>
+        <div class="kpi reveal reveal-3">
+          <div class="kpi__label">Outstanding</div>
+          <div class="kpi__value" style="color:var(--brass-deep)">${Billing.compactMoney(a.outstanding)}</div>
+          <div class="kpi__foot">${a.pendingCount} bookings awaiting settlement</div>
+        </div>
+        <div class="kpi reveal reveal-4">
+          <div class="kpi__label">GST liability</div>
+          <div class="kpi__value">${Billing.compactMoney(a.gst)}</div>
+          <div class="kpi__foot">CGST + SGST @ ${Math.round(Store.settings().gstRate * 100)}%</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="stack">
+          <div class="card reveal">
+            <div class="card__head">
+              <div>
+                <div class="card__title">Billed value by month</div>
+                <div class="card__sub">Last six months, inclusive of tax</div>
+              </div>
+              <span class="tag tag--gold">${Billing.compactMoney(months.reduce((s, m) => s + m.revenue, 0))} total</span>
+            </div>
+            <div class="card__body">
+              <div class="bars">
+                ${months.map((m) => `
+                  <div class="bar-col">
+                    <span class="bar-value">${m.revenue ? Billing.compactMoney(m.revenue) : '—'}</span>
+                    <div class="bar-wrap"><div class="bar" style="height:${Math.max((m.revenue / maxRev) * 100, m.revenue ? 4 : 1.5)}%;${m.revenue ? '' : 'opacity:.25'}"></div></div>
+                    <span class="bar-label">${fmtMonth(m.key)}</span>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal reveal-2">
+            <div class="card__head">
+              <div>
+                <div class="card__title">Recent bookings</div>
+                <div class="card__sub">Latest reservations created</div>
+              </div>
+              <button class="btn btn--quiet btn--sm" data-link="bookings">View all ${icon('right')}</button>
+            </div>
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Guest</th><th>Service</th><th>Schedule</th><th>Status</th><th class="t-right">Bill</th></tr></thead>
+                <tbody>
+                  ${recent.map((r) => `
+                    <tr data-open-booking="${r.booking.id}">
+                      <td>${customerCell(r.booking.customerId)}</td>
+                      <td><span class="t-strong">${esc(r.service ? r.service.name : '—')}</span><div class="tiny faint">${esc(r.service ? r.service.category : '')}</div></td>
+                      <td><div class="sm">${fmtDate(r.booking.date, 'short')}</div><div class="tiny faint">${esc(slotLabel(r.booking.slot))}</div></td>
+                      <td>${statusPill(r.booking.status)}</td>
+                      <td class="t-right t-mono">${r.bill ? Billing.money(r.bill.total) : '—'}</td>
+                    </tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="card reveal reveal-2">
+            <div class="card__head">
+              <div class="card__title">Service mix</div>
+              <span class="tiny faint">by revenue</span>
+            </div>
+            <div class="card__body">
+              <div class="donut-wrap">
+                <div class="donut">
+                  ${donutSVG(a.byService.slice(0, 5).map((s, i) => ({ value: s.revenue, color: CHART_COLORS[i % CHART_COLORS.length] })))}
+                  <div class="donut__center"><strong>${a.byService.length}</strong><span>services</span></div>
+                </div>
+                <div class="donut-legend">
+                  ${a.byService.slice(0, 4).map((s, i) => `
+                    <div class="donut-row">
+                      <span class="legend-swatch" style="background:${CHART_COLORS[i % CHART_COLORS.length]}"></span>
+                      <span class="nm trunc">${esc(s.service.name)}</span>
+                      <span class="vl">${Billing.compactMoney(s.revenue)}</span>
+                    </div>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal reveal-3">
+            <div class="card__head">
+              <div class="card__title">Upcoming</div>
+              <span class="tag">${a.upcomingCount} scheduled</span>
+            </div>
+            <div class="card__body" style="padding-top:6px;padding-bottom:8px">
+              <div class="timeline">
+                ${upcoming.length ? upcoming.map((r) => {
+                  const c = Store.customerById(r.booking.customerId);
+                  const d = parseISO(r.booking.date);
+                  return `<div class="tl-item" data-open-booking="${r.booking.id}">
+                    <div class="tl-date"><div class="d num">${d.getDate()}</div><div class="m">${MONTHS[d.getMonth()]}</div></div>
+                    <div class="tl-main">
+                      <div class="tl-title trunc">${esc(r.service ? r.service.name : 'Booking')}</div>
+                      <div class="tl-meta"><span>${esc(c ? c.name : '')}</span><span class="tl-dot"></span><span>${esc(slotLabel(r.booking.slot))}</span></div>
+                    </div>
+                    <div class="tl-amt">${r.bill ? Billing.compactMoney(r.bill.total) : ''}</div>
+                  </div>`;
+                }).join('') : emptyState('calendar', 'Nothing scheduled', 'Upcoming reservations will appear here.')}
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal reveal-4">
+            <div class="card__head">
+              <div class="card__title">Slot availability</div>
+              <span class="tiny faint">${fmtDate(tomorrow, 'short')}</span>
+            </div>
+            <div class="card__body">
+              <div style="display:flex;flex-direction:column;gap:9px">
+                ${availServices.map((s) => `
+                  <div class="between">
+                    <span class="sm trunc" style="max-width:112px;color:var(--ink-soft)">${esc(s.name)}</span>
+                    <div class="row" style="gap:5px">
+                      ${Store.slots().map((sl) => {
+                        const taken = Store.isSlotTaken(s.id, tomorrow, sl.id);
+                        return `<span title="${esc(sl.label)} · ${taken ? 'Booked' : 'Free'}" style="width:13px;height:13px;border-radius:4px;border:1px solid ${taken ? 'var(--line-strong)' : 'color-mix(in srgb, var(--sage) 32%, transparent)'};background:${taken ? 'var(--line-strong)' : 'var(--sage-wash)'};cursor:help"></span>`;
+                      }).join('')}
+                    </div>
+                  </div>`).join('')}
+              </div>
+              <div class="row mt-2" style="gap:14px">
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--sage-wash);border:1px solid color-mix(in srgb,var(--sage) 32%,transparent)"></span>Free</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--line-strong)"></span>Booked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const slotLabel = (id) => {
+    const s = Store.slotById(id);
+    return s ? `${s.label} · ${s.time}` : id;
+  };
+
+  /* ============================================================
+     VIEW · Bookings
+     ============================================================ */
+  function viewBookings() {
+    let rows = billsList();
+    if (ui.filterStatus !== 'all') {
+      if (ui.filterStatus === 'unpaid') rows = rows.filter((r) => r.bill && r.bill.paymentStatus !== 'paid');
+      else rows = rows.filter((r) => r.booking.status === ui.filterStatus);
+    }
+    if (ui.filterQ) {
+      const q = ui.filterQ.toLowerCase();
+      rows = rows.filter((r) => {
+        const c = r.customer;
+        return (r.booking.id + ' ' + (c ? c.name + ' ' + c.phone + ' ' + c.email : '') + ' ' + (r.service ? r.service.name : ''))
+          .toLowerCase().includes(q);
+      });
+    }
+    rows.sort((x, y) => (y.booking.date + y.booking.slot).localeCompare(x.booking.date + x.booking.slot));
+
+    const counts = { all: Store.bookings().length };
+    Store.bookings().forEach((b) => { counts[b.status] = (counts[b.status] || 0) + 1; });
+
+    const tabs = [
+      ['all', 'All'],
+      ['confirmed', 'Confirmed'],
+      ['pending', 'Pending'],
+      ['completed', 'Completed'],
+      ['cancelled', 'Cancelled'],
+      ['unpaid', 'Unsettled'],
+    ];
+
+    return `<div class="shell">
+      ${pageHead('Bookings', 'Every reservation with its schedule, status and settlement position.', `
+        <button class="btn btn--ghost" data-action="export"><span data-icon="download"></span> Export</button>
+        <button class="btn btn--primary" data-action="new-booking"><span data-icon="plus"></span> New booking</button>
+      `)}
+
+      <div class="toolbar">
+        <div class="segmented">
+          ${tabs.map(([k, label]) => `<button data-filter-status="${k}" class="${ui.filterStatus === k ? 'is-on' : ''}">${label}${counts[k] !== undefined ? ` <span class="tiny faint">${k === 'unpaid' ? Store.bookings().filter((b) => { const bl = Store.billFor(b); return bl && bl.paymentStatus !== 'paid'; }).length : counts[k]}</span>` : ''}</button>`).join('')}
+        </div>
+        <div class="spacer"></div>
+        <label class="search-inline">${icon('search')}
+          <input id="bookingSearch" type="search" placeholder="Search guest, ID, service…" value="${esc(ui.filterQ)}" />
+        </label>
+      </div>
+
+      <div class="panel">
+        ${rows.length ? `<div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Booking</th><th>Guest</th><th>Service</th><th>Schedule</th>
+              <th>Status</th><th class="t-right">Total</th><th class="t-right">Balance</th><th></th>
+            </tr></thead>
+            <tbody>
+              ${rows.map((r) => `
+                <tr data-open-booking="${r.booking.id}">
+                  <td class="t-id">${esc(r.booking.id)}</td>
+                  <td>${customerCell(r.booking.customerId, r.customer ? (r.customer.tier + ' · ' + r.customer.phone) : '')}</td>
+                  <td><div class="t-strong">${esc(r.service ? r.service.name : '—')}</div><div class="tiny faint">${esc(r.service ? `${r.booking.qty} ${r.service.unit}${r.booking.qty > 1 ? 's' : ''} · ${r.booking.guests} guests` : '')}</div></td>
+                  <td><div class="sm">${fmtDate(r.booking.date, 'short')}</div><div class="tiny faint">${esc(slotName(r.booking.slot))}</div></td>
+                  <td>${statusPill(r.booking.status)}</td>
+                  <td class="t-right t-mono">${r.bill ? Billing.money(r.bill.total) : '—'}</td>
+                  <td class="t-right t-mono" style="${r.bill && r.bill.balance > 0 ? 'color:var(--brass-deep);font-weight:500' : 'color:var(--ink-faint)'}">${r.bill ? Billing.money(r.bill.balance) : '—'}</td>
+                  <td class="t-right"><span class="iconbtn" style="pointer-events:none">${icon('right')}</span></td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>` : emptyState('calendar', 'No bookings match', 'Try a different filter or create a new reservation.', `<button class="btn btn--primary btn--sm" data-action="new-booking">${icon('plus')} New booking</button>`)}
+      </div>
+    </div>`;
+  }
+
+  const slotName = (id) => {
+    const s = Store.slotById(id);
+    return s ? s.label : id;
+  };
+
+  /* ============================================================
+     VIEW · New booking
+     ============================================================ */
+  function viewNew() {
+    const customers = Store.customers();
+    const services = Store.services();
+    const defaultDate = Store.addDays(Store.todayISO(), 1);
+
+    return `<div class="shell">
+      ${pageHead('New booking', 'Capture the guest, choose the service and slot — the bill calculates itself.', `
+        <button class="btn btn--ghost" data-link="bookings">${icon('left')} All bookings</button>
+      `)}
+
+      <div class="composer">
+        <div class="stack">
+          <div class="card">
+            <div class="card__head">
+              <div><div class="card__title">01 · Guest</div><div class="card__sub">Select an existing customer or register a new one</div></div>
+            </div>
+            <div class="card__body">
+              <div class="form-grid">
+                <div class="field span-2" id="fCustomer">
+                  <label class="field__label" for="nbCustomer">Customer <span class="req">*</span></label>
+                  <select class="select" id="nbCustomer">
+                    <option value="">Select a customer…</option>
+                    ${customers.map((c) => `<option value="${c.id}">${esc(c.name)} — ${esc(c.phone)}</option>`).join('')}
+                    <option value="__new">＋ Register new customer</option>
+                  </select>
+                  <span class="field__err">Choose a customer or register a new one</span>
+                </div>
+              </div>
+
+              <div id="newCustomerBox" hidden style="margin-top:16px">
+                <div class="divider"></div>
+                <div class="form-grid">
+                  <div class="field" id="fCName">
+                    <label class="field__label">Full name <span class="req">*</span></label>
+                    <input class="input" id="ncName" placeholder="e.g. Ananya Menon" autocomplete="off" />
+                    <span class="field__err">Name is required</span>
+                  </div>
+                  <div class="field" id="fCPhone">
+                    <label class="field__label">Phone <span class="req">*</span></label>
+                    <input class="input" id="ncPhone" placeholder="+91 98470 00000" autocomplete="off" />
+                    <span class="field__err">Enter a valid phone number</span>
+                  </div>
+                  <div class="field">
+                    <label class="field__label">Email</label>
+                    <input class="input" id="ncEmail" type="email" placeholder="guest@example.com" autocomplete="off" />
+                  </div>
+                  <div class="field">
+                    <label class="field__label">City</label>
+                    <input class="input" id="ncCity" placeholder="Kochi" autocomplete="off" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div><div class="card__title">02 · Service &amp; schedule</div><div class="card__sub">Availability is verified before confirmation</div></div>
+              <div class="field" style="min-width:164px">
+                <input class="input" type="date" id="nbDate" value="${defaultDate}" min="${Store.todayISO()}" />
+              </div>
+            </div>
+            <div class="card__body">
+              <div class="field" id="fService" style="margin-bottom:16px">
+                <label class="field__label">Service <span class="req">*</span></label>
+                <div class="svc-picker" id="svcPicker">
+                  ${services.map((s) => `
+                    <button type="button" class="svc-opt" data-svc="${s.id}">
+                      <div class="svc-opt__top">
+                        <span class="svc-opt__icon">${icon(s.icon)}</span>
+                        <span class="tag">${esc(s.category)}</span>
+                      </div>
+                      <div class="svc-opt__name">${esc(s.name)}</div>
+                      <div class="svc-opt__rate">${Billing.money(s.rate)} / ${esc(s.unit)}</div>
+                    </button>`).join('')}
+                </div>
+                <span class="field__err">Select a service</span>
+              </div>
+
+              <div class="field" id="fSlot">
+                <label class="field__label">Time slot <span class="req">*</span></label>
+                <div class="slot-grid" id="slotGrid">
+                  ${Store.slots().map((s) => `
+                    <button type="button" class="slot" data-slot="${s.id}" disabled>
+                      <span class="slot__label">${esc(s.label)}</span>
+                      <span class="slot__time">${esc(s.time)}</span>
+                    </button>`).join('')}
+                </div>
+                <span class="field__err">Select an available slot</span>
+              </div>
+
+              <div class="form-grid mt-2">
+                <div class="field">
+                  <label class="field__label">Quantity <span class="req">*</span></label>
+                  <input class="input" type="number" id="nbQty" value="1" min="1" max="365" step="1" />
+                  <span class="tiny faint" id="qtyHint">—</span>
+                </div>
+                <div class="field">
+                  <label class="field__label">Guests</label>
+                  <input class="input" type="number" id="nbGuests" value="1" min="1" max="500" step="1" />
+                  <span class="tiny faint" id="guestHint">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div><div class="card__title">03 · Extras &amp; discount</div><div class="card__sub">Add-ons post directly to the bill</div></div>
+            </div>
+            <div class="card__body">
+              <div class="field" style="margin-bottom:16px">
+                <label class="field__label">Add-ons</label>
+                <div class="addon-chips" id="addonChips">
+                  ${Store.addons().map((a) => `
+                    <button type="button" class="chip" data-addon="${a.id}">
+                      ${icon('plus')} ${esc(a.name)} <span class="faint">${Billing.money(a.rate)}</span>
+                    </button>`).join('')}
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label class="field__label">Discount type</label>
+                  <select class="select" id="nbDiscType">
+                    <option value="percent">Percentage</option>
+                    <option value="flat">Flat amount</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field__label">Discount value</label>
+                  <input class="input" type="number" id="nbDiscValue" value="0" min="0" step="0.01" />
+                </div>
+                <div class="field span-2">
+                  <label class="field__label">Notes</label>
+                  <textarea class="textarea" id="nbNotes" placeholder="Preferences, arrival time, special instructions…"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div><div class="card__title">04 · Payment</div><div class="card__sub">Optional — collect an advance now</div></div>
+              <label class="row" style="gap:8px;font-size:12px;color:var(--ink-mute)">
+                <input type="checkbox" id="nbPayNow" /> Collect now
+              </label>
+            </div>
+            <div class="card__body" id="payBox" hidden>
+              <div class="form-grid">
+                <div class="field">
+                  <label class="field__label">Amount</label>
+                  <input class="input input--mono" type="number" id="nbPayAmount" value="0" min="0" step="0.01" />
+                </div>
+                <div class="field">
+                  <label class="field__label">Method</label>
+                  <select class="select" id="nbPayMethod">
+                    <option>UPI</option><option>Card</option><option>Cash</option><option>Bank Transfer</option>
+                  </select>
+                </div>
+                <div class="field span-2">
+                  <label class="field__label">Reference</label>
+                  <input class="input input--mono" id="nbPayRef" placeholder="Auto-generated if left blank" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="billpanel">
+          <div class="billpanel__head">
+            <h3>Bill preview</h3>
+            <span class="tag" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(233,231,221,.7)" id="billRef">Draft</span>
+          </div>
+          <div class="billpanel__body" id="billBody"></div>
+          <div class="bill-foot">
+            <div class="words" id="billWords"></div>
+            <button class="btn btn--brass btn--lg btn--block" data-action="create-booking">
+              ${icon('check')} Confirm booking
+            </button>
+            <p class="bill-note">Availability is validated at confirmation. A receipt is generated automatically.</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ── New booking logic ─────────────────────────────────── */
+  const nb = {
+    serviceId: null, slot: null, addons: new Set(),
+  };
+
+  function nbState() {
+    return {
+      serviceId: nb.serviceId,
+      slot: nb.slot,
+      date: $('#nbDate') ? $('#nbDate').value : '',
+      qty: Number($('#nbQty') ? $('#nbQty').value : 1) || 1,
+      guests: Number($('#nbGuests') ? $('#nbGuests').value : 1) || 1,
+      discType: $('#nbDiscType') ? $('#nbDiscType').value : 'percent',
+      discValue: Number($('#nbDiscValue') ? $('#nbDiscValue').value : 0) || 0,
+      addonIds: Array.from(nb.addons),
+    };
+  }
+
+  function nbItems(st) {
+    const items = [];
+    const svc = Store.serviceById(st.serviceId);
+    if (svc) items.push({ name: svc.name, qty: st.qty, rate: svc.rate, unit: svc.unit });
+    st.addonIds.forEach((id) => {
+      const a = Store.addons().find((x) => x.id === id);
+      if (!a) return;
+      const qty = a.unit === 'unit' || a.unit === 'trip' ? st.qty : 1;
+      items.push({ name: a.name, qty, rate: a.rate, unit: a.unit });
+    });
+    return items;
+  }
+
+  function nbBill(st) {
+    return Billing.computeBill({
+      items: nbItems(st),
+      discount: { type: st.discType, value: st.discValue },
+      gstRate: Store.settings().gstRate,
+      paid: 0,
+    });
+  }
+
+  function renderBill() {
+    const st = nbState();
+    const bill = nbBill(st);
+    const svc = Store.serviceById(st.serviceId);
+
+    const body = $('#billBody');
+    if (!body) return;
+
+    body.innerHTML = `
+      ${svc ? `<div class="bill-line" style="padding-bottom:8px">
+        <span class="k" style="font-size:12.5px;color:var(--ink)">${esc(svc.name)}</span>
+        <span class="v">${esc(st.qty)} × ${Billing.money(svc.rate)}</span>
+      </div>` : `<div class="bill-line bill-line--muted"><span class="k">Select a service to begin</span><span class="v"></span></div>`}
+      ${st.addonIds.map((id) => {
+        const a = Store.addons().find((x) => x.id === id);
+        if (!a) return '';
+        const q = a.unit === 'unit' || a.unit === 'trip' ? st.qty : 1;
+        return `<div class="bill-line bill-line--item"><span class="k">${esc(a.name)}</span><span class="v">${q > 1 ? q + ' × ' : ''}${Billing.money(a.rate * q)}</span></div>`;
+      }).join('')}
+      <div class="bill-line bill-line--sub"><span class="k">Subtotal</span><span class="v">${Billing.money(bill.subtotal)}</span></div>
+      ${bill.discount > 0 ? `<div class="bill-line bill-line--disc"><span class="k">Discount${st.discType === 'percent' ? ` (${st.discValue}%)` : ''}</span><span class="v">− ${Billing.money(bill.discount)}</span></div>` : ''}
+      <div class="bill-line"><span class="k">Taxable value</span><span class="v">${Billing.money(bill.taxable)}</span></div>
+      <div class="bill-line bill-line--muted"><span class="k">CGST @ ${(bill.gstRate * 50).toFixed(1)}%</span><span class="v">${Billing.money(bill.cgst)}</span></div>
+      <div class="bill-line bill-line--muted"><span class="k">SGST @ ${(bill.gstRate * 50).toFixed(1)}%</span><span class="v">${Billing.money(bill.sgst)}</span></div>
+      <div class="bill-total"><span class="k">Amount payable</span><span class="v">${Billing.money(bill.total)}</span></div>
+    `;
+
+    const words = $('#billWords');
+    if (words) words.innerHTML = `<strong>In words</strong>${esc(Billing.amountInWords(bill.total))}`;
+
+    const payAmount = $('#nbPayAmount');
+    if (payAmount && document.activeElement !== payAmount) payAmount.value = bill.total ? bill.total.toFixed(2) : '0';
+
+    const ref = $('#billRef');
+    if (ref) ref.textContent = st.slot ? `${slotName(st.slot)}` : 'Draft';
+  }
+
+  function renderSlots() {
+    const st = nbState();
+    const grid = $('#slotGrid');
+    if (!grid) return;
+    grid.innerHTML = Store.slots().map((s) => {
+      const taken = st.serviceId && st.date ? Store.isSlotTaken(st.serviceId, st.date, s.id) : false;
+      const on = nb.slot === s.id;
+      return `<button type="button" class="slot ${on ? 'is-on' : ''} ${taken ? 'is-taken' : ''}" data-slot="${s.id}" ${taken || !st.serviceId ? 'disabled' : ''}>
+        <span class="slot__label">${esc(s.label)}</span>
+        <span class="slot__time">${taken ? 'Booked' : esc(s.time)}</span>
+      </button>`;
+    }).join('');
+
+    if (nb.slot && st.serviceId && st.date && Store.isSlotTaken(st.serviceId, st.date, nb.slot)) nb.slot = null;
+  }
+
+  function renderHints() {
+    const st = nbState();
+    const svc = Store.serviceById(st.serviceId);
+    const qh = $('#qtyHint');
+    const gh = $('#guestHint');
+    if (qh) qh.textContent = svc ? `Charged per ${svc.unit}` : '—';
+    if (gh) gh.textContent = svc ? `Capacity ${svc.capacity} guests` : '—';
+  }
+
+  function bindNewBooking() {
+    nb.serviceId = null;
+    nb.slot = null;
+    nb.addons = new Set();
+
+    const custSel = $('#nbCustomer');
+    custSel.addEventListener('change', () => {
+      const isNew = custSel.value === '__new';
+      $('#newCustomerBox').hidden = !isNew;
+      $('#fCustomer').classList.remove('field--err');
+    });
+
+    $('#svcPicker').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-svc]');
+      if (!btn) return;
+      nb.serviceId = btn.dataset.svc;
+      nb.slot = null;
+      $$('#svcPicker .svc-opt').forEach((b) => b.classList.toggle('is-on', b.dataset.svc === nb.serviceId));
+      $('#fService').classList.remove('field--err');
+      renderSlots(); renderHints(); renderBill();
+    });
+
+    $('#slotGrid').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-slot]');
+      if (!btn || btn.disabled) return;
+      nb.slot = btn.dataset.slot;
+      $('#fSlot').classList.remove('field--err');
+      renderSlots(); renderBill();
+    });
+
+    $('#nbDate').addEventListener('change', () => { renderSlots(); renderBill(); });
+
+    $('#addonChips').addEventListener('click', (e) => {
+      const chip = e.target.closest('[data-addon]');
+      if (!chip) return;
+      const id = chip.dataset.addon;
+      if (nb.addons.has(id)) nb.addons.delete(id); else nb.addons.add(id);
+      chip.classList.toggle('is-on', nb.addons.has(id));
+      renderBill();
+    });
+
+    ['#nbQty', '#nbGuests', '#nbDiscValue'].forEach((sel) => {
+      const el = $(sel);
+      if (el) el.addEventListener('input', () => { renderHints(); renderBill(); });
+    });
+    $('#nbDiscType').addEventListener('change', renderBill);
+
+    $('#nbPayNow').addEventListener('change', (e) => {
+      $('#payBox').hidden = !e.target.checked;
+      if (e.target.checked) renderBill();
+    });
+
+    renderSlots();
+    renderHints();
+    renderBill();
+  }
+
+  function createBooking() {
+    const st = nbState();
+    let ok = true;
+
+    const custSel = $('#nbCustomer');
+    const chosen = custSel.value;
+    if (!chosen) { $('#fCustomer').classList.add('field--err'); ok = false; }
+
+    let newCustomerData = null;
+    if (chosen === '__new') {
+      const name = $('#ncName').value.trim();
+      const phone = $('#ncPhone').value.trim();
+      if (!name) { $('#fCName').classList.add('field--err'); ok = false; } else $('#fCName').classList.remove('field--err');
+      if (!/^[+\d][\d\s\-()]{6,}$/.test(phone)) { $('#fCPhone').classList.add('field--err'); ok = false; } else $('#fCPhone').classList.remove('field--err');
+      newCustomerData = {
+        name, phone,
+        email: $('#ncEmail').value.trim(),
+        city: $('#ncCity').value.trim(),
+        tier: 'Silver',
+      };
+    }
+
+    if (!st.serviceId) { $('#fService').classList.add('field--err'); ok = false; }
+    if (!st.date) { toast('Choose a booking date', 'bad'); ok = false; }
+    if (!st.slot) { $('#fSlot').classList.add('field--err'); ok = false; }
+    if (!ok) { toast('Please complete the highlighted fields', 'bad'); return; }
+
+    if (Store.isSlotTaken(st.serviceId, st.date, st.slot)) {
+      toast('That slot was just taken — choose another', 'bad');
+      renderSlots(); renderBill();
+      return;
+    }
+
+    let customerId;
+    if (newCustomerData) {
+      const c = Store.createCustomer(newCustomerData);
+      customerId = c.id;
+    } else {
+      customerId = chosen;
+    }
+
+    const items = nbItems(st);
+    const booking = Store.createBooking({
+      customerId,
+      serviceId: st.serviceId,
+      date: st.date,
+      slot: st.slot,
+      qty: st.qty,
+      guests: st.guests,
+      items,
+      discount: { type: st.discType, value: st.discValue },
+      notes: $('#nbNotes').value.trim(),
+      status: 'confirmed',
+    });
+
+    if ($('#nbPayNow').checked) {
+      const amt = Number($('#nbPayAmount').value) || 0;
+      if (amt > 0) {
+        Store.recordPayment(booking.id, {
+          amount: amt,
+          method: $('#nbPayMethod').value,
+          reference: $('#nbPayRef').value.trim() || undefined,
+          note: 'Advance at booking',
+          date: Store.todayISO(),
+        });
+      }
+    }
+
+    hydrateNavBadge();
+    toast(`${booking.id} confirmed for ${fmtDate(booking.date, 'short')}`);
+    openInvoiceModal(booking.id);
+    navigate('bookings');
+  }
+
+  /* ============================================================
+     VIEW · Customers
+     ============================================================ */
+  function viewCustomers() {
+    const q = ui.filterQ.toLowerCase();
+    let customers = Store.customers().slice();
+    if (q) {
+      customers = customers.filter((c) =>
+        (c.name + ' ' + c.phone + ' ' + c.email + ' ' + c.city).toLowerCase().includes(q));
+    }
+    customers.sort((a, b) => a.name.localeCompare(b.name));
+
+    return `<div class="shell">
+      ${pageHead('Customers', 'Guest records with reservation history and lifetime value.', `
+        <div class="search-inline">${icon('search')}<input id="customerSearch" type="search" placeholder="Search guests…" value="${esc(ui.filterQ)}" /></div>
+        <button class="btn btn--primary" data-action="add-customer"><span data-icon="plus"></span> Add customer</button>
+      `)}
+
+      ${customers.length ? `<div class="cust-grid">
+        ${customers.map((c) => {
+          const rows = billsList().filter((r) => r.booking.customerId === c.id && r.booking.status !== 'cancelled');
+          const spend = rows.reduce((s, r) => s + (r.bill ? r.bill.total : 0), 0);
+          return `<div class="cust" data-open-customer="${c.id}">
+            <div class="cust__top">
+              <div class="cust__av">${esc(initials(c.name))}</div>
+              <div class="grow">
+                <div class="cust__name trunc">${esc(c.name)}</div>
+                <div class="cust__id">${esc(c.id)} · ${esc(c.tier)}</div>
+              </div>
+              <span class="tag ${c.tier === 'Platinum' ? 'tag--gold' : ''}">${esc(c.tier)}</span>
+            </div>
+            <div class="cust__rows">
+              <div class="cust__row">${icon('phone')}<span class="trunc">${esc(c.phone)}</span></div>
+              <div class="cust__row">${icon('mail')}<span class="trunc">${esc(c.email || '—')}</span></div>
+              <div class="cust__row">${icon('pin')}<span class="trunc">${esc(c.city || '—')}</span></div>
+            </div>
+            <div class="cust__foot">
+              <span class="cust__stat">Bookings<b>${rows.length}</b></span>
+              <span class="cust__stat" style="text-align:center">Lifetime value<b>${Billing.compactMoney(spend)}</b></span>
+              <span class="cust__stat" style="text-align:right">Since<b>${esc(String(c.createdAt || '').slice(0, 4) || '—')}</b></span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>` : `<div class="panel">${emptyState('users', 'No customers found', 'Adjust your search or add a new guest record.', `<button class="btn btn--primary btn--sm" data-action="add-customer">${icon('plus')} Add customer</button>`)}</div>`}
+    </div>`;
+  }
+
+  /* ============================================================
+     VIEW · Invoices
+     ============================================================ */
+  function viewInvoices() {
+    let rows = billsList();
+    if (ui.filterStatus !== 'all') {
+      rows = rows.filter((r) => r.bill && r.bill.paymentStatus === ui.filterStatus);
+    }
+    rows.sort((x, y) => y.booking.date.localeCompare(x.booking.date));
+
+    return `<div class="shell">
+      ${pageHead('Invoices', 'Tax invoices and receipts generated from confirmed bookings.', `
+        <button class="btn btn--ghost" data-action="export">${icon('download')} Export ledger</button>
+      `)}
+
+      <div class="toolbar">
+        <div class="segmented">
+          ${[['all', 'All invoices'], ['paid', 'Paid'], ['partial', 'Part paid'], ['pending', 'Unpaid']].map(([k, label]) =>
+            `<button data-filter-status="${k}" class="${ui.filterStatus === k ? 'is-on' : ''}">${label}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Invoice</th><th>Guest</th><th>Issued</th><th class="t-right">Subtotal</th>
+              <th class="t-right">GST</th><th class="t-right">Total</th><th class="t-right">Balance</th><th>Payment</th>
+            </tr></thead>
+            <tbody>
+              ${rows.map((r) => `
+                <tr data-open-invoice="${r.booking.id}">
+                  <td class="t-id">${esc(r.booking.id.replace('BK-', 'INV-'))}</td>
+                  <td>${customerCell(r.booking.customerId, r.customer ? r.customer.tier : '')}</td>
+                  <td class="sm">${fmtDate(r.booking.date, 'short')}</td>
+                  <td class="t-right t-mono">${Billing.money(r.bill.subtotal)}</td>
+                  <td class="t-right t-mono">${Billing.money(r.bill.tax)}</td>
+                  <td class="t-right t-mono t-strong">${Billing.money(r.bill.total)}</td>
+                  <td class="t-right t-mono" style="${r.bill.balance > 0 ? 'color:var(--brass-deep)' : 'color:var(--ink-faint)'}">${Billing.money(r.bill.balance)}</td>
+                  <td>${payPill(r.bill.paymentStatus)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     VIEW · Payments
+     ============================================================ */
+  function viewPayments() {
+    const pays = Store.payments().slice().sort((a, b) => (b.date + b.id).localeCompare(a.date + a.id));
+    const a = Store.analytics();
+    const methodIcon = { UPI: 'card', Card: 'card', Cash: 'cash', 'Bank Transfer': 'bank' };
+
+    return `<div class="shell">
+      ${pageHead('Payments', 'Every settlement recorded against a booking, with mode and reference.', `
+        <button class="btn btn--primary" data-action="record-payment"><span data-icon="plus"></span> Record payment</button>
+      `)}
+
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="kpi"><div class="kpi__label">Collected</div><div class="kpi__value">${Billing.money(a.collected)}</div><div class="kpi__foot">${pays.length} transactions</div></div>
+        <div class="kpi"><div class="kpi__label">Outstanding</div><div class="kpi__value" style="color:var(--brass-deep)">${Billing.money(a.outstanding)}</div><div class="kpi__foot">${a.pendingCount} bookings open</div></div>
+        <div class="kpi"><div class="kpi__label">Collection rate</div><div class="kpi__value">${Math.round((a.collected / (a.revenue || 1)) * 100)}<small>%</small></div><div class="kpi__foot">of total billed value</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Payment</th><th>Booking</th><th>Guest</th><th>Method</th><th>Reference</th><th>Date</th><th class="t-right">Amount</th></tr></thead>
+            <tbody>
+              ${pays.length ? pays.map((p) => {
+                const b = Store.bookingById(p.bookingId);
+                const c = b ? Store.customerById(b.customerId) : null;
+                return `<tr data-open-booking="${p.bookingId}">
+                  <td class="t-id">${esc(p.id)}</td>
+                  <td class="t-id">${esc(p.bookingId)}</td>
+                  <td>${customerCell(b ? b.customerId : null, c ? c.tier : '')}</td>
+                  <td><span class="row sm" style="gap:6px">${icon(methodIcon[p.method] || 'cash')} ${esc(p.method)}</span></td>
+                  <td class="t-mono tiny">${esc(p.reference || '—')}</td>
+                  <td class="sm">${fmtDate(p.date, 'short')}</td>
+                  <td class="t-right t-mono t-strong">${Billing.money(p.amount)}</td>
+                </tr>`;
+              }).join('') : `<tr><td colspan="7">${emptyState('wallet', 'No payments yet', 'Settlements recorded against bookings appear here.')}</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     VIEW · Reports
+     ============================================================ */
+  function viewReports() {
+    const a = Store.analytics();
+    const months = lastMonthKeys(6).map((k) => {
+      const f = a.months.find((m) => m.key === k);
+      return { key: k, revenue: f ? f.revenue : 0 };
+    });
+    const maxRev = Math.max(...months.map((m) => m.revenue), 1);
+    const maxSvc = Math.max(...a.byService.map((s) => s.revenue), 1);
+    const totalMethods = a.byMethod.reduce((s, m) => s + m.amount, 0) || 1;
+
+    const topCustomers = Store.customers().map((c) => {
+      const rows = billsList().filter((r) => r.booking.customerId === c.id && r.booking.status !== 'cancelled');
+      return { c, spend: rows.reduce((s, r) => s + r.bill.total, 0), count: rows.length };
+    }).sort((x, y) => y.spend - x.spend).slice(0, 5);
+
+    return `<div class="shell">
+      ${pageHead('Reports', 'Revenue composition, tax position and guest value across the book.', `
+        <button class="btn btn--ghost" data-action="export">${icon('download')} Export</button>
+      `)}
+
+      <div class="kpi-grid">
+        <div class="kpi kpi--hero"><div class="kpi__label">Gross billed</div><div class="kpi__value">${Billing.money(a.revenue)}</div>
+          <div class="kpi__foot">${a.totalBookings} bookings · ${a.customers} guests</div>
+          <div class="kpi__spark">${sparkline(months.map((m) => m.revenue))}</div>
+        </div>
+        <div class="kpi"><div class="kpi__label">Net of tax</div><div class="kpi__value">${Billing.compactMoney(a.revenue - a.gst)}</div><div class="kpi__foot">taxable value</div></div>
+        <div class="kpi"><div class="kpi__label">GST payable</div><div class="kpi__value">${Billing.compactMoney(a.gst)}</div><div class="kpi__foot">CGST ${Billing.compactMoney(a.gst / 2)} · SGST ${Billing.compactMoney(a.gst / 2)}</div></div>
+        <div class="kpi"><div class="kpi__label">Avg. ticket</div><div class="kpi__value">${Billing.compactMoney(a.revenue / (a.totalBookings || 1))}</div><div class="kpi__foot">per booking</div></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="card">
+          <div class="card__head"><div class="card__title">Revenue trend</div><span class="tiny faint">6 months</span></div>
+          <div class="card__body">
+            <div class="bars">
+              ${months.map((m) => `
+                <div class="bar-col">
+                  <span class="bar-value">${m.revenue ? Billing.compactMoney(m.revenue) : '—'}</span>
+                  <div class="bar-wrap"><div class="bar" style="height:${Math.max((m.revenue / maxRev) * 100, m.revenue ? 4 : 1.5)}%;${m.revenue ? '' : 'opacity:.25'}"></div></div>
+                  <span class="bar-label">${fmtMonth(m.key)}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><div class="card__title">Revenue by service</div><span class="tiny faint">all time</span></div>
+          <div class="card__body">
+            <div class="hbar">
+              ${a.byService.map((s) => `
+                <div class="hbar-row">
+                  <span class="hbar-name">${esc(s.service.name)}</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:${(s.revenue / maxSvc) * 100}%"></div></div>
+                  <span class="hbar-val">${Billing.compactMoney(s.revenue)}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="card">
+          <div class="card__head"><div class="card__title">Payment mix</div><span class="tiny faint">collected value</span></div>
+          <div class="card__body">
+            <div class="donut-wrap">
+              <div class="donut">
+                ${donutSVG(a.byMethod.map((m, i) => ({ value: m.amount, color: CHART_COLORS[i % CHART_COLORS.length] })))}
+                <div class="donut__center"><strong>${Math.round((a.collected / (a.revenue || 1)) * 100)}%</strong><span>settled</span></div>
+              </div>
+              <div class="donut-legend">
+                ${a.byMethod.map((m, i) => `
+                  <div class="donut-row">
+                    <span class="legend-swatch" style="background:${CHART_COLORS[i % CHART_COLORS.length]}"></span>
+                    <span class="nm">${esc(m.method)}</span>
+                    <span class="vl">${Math.round((m.amount / totalMethods) * 100)}%</span>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><div class="card__title">GST position</div><span class="tag">${Math.round(Store.settings().gstRate * 100)}% slab</span></div>
+          <div class="card__body">
+            <div class="statlist">
+              <div class="statrow"><span class="k">Taxable value</span><span class="v">${Billing.money(a.revenue - a.gst)}</span></div>
+              <div class="statrow"><span class="k">CGST @ 9%</span><span class="v">${Billing.money(a.gst / 2)}</span></div>
+              <div class="statrow"><span class="k">SGST @ 9%</span><span class="v">${Billing.money(a.gst / 2)}</span></div>
+              <div class="statrow"><span class="k strong">Total tax liability</span><span class="v" style="color:var(--brass-deep)">${Billing.money(a.gst)}</span></div>
+              <div class="statrow"><span class="k">GSTIN</span><span class="v tiny">${esc(Store.settings().gstin)}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__head"><div class="card__title">Top guests by value</div><span class="tiny faint">lifetime billed</span></div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Guest</th><th>Tier</th><th>City</th><th class="t-right">Bookings</th><th class="t-right">Lifetime value</th></tr></thead>
+            <tbody>
+              ${topCustomers.map((t) => `
+                <tr data-open-customer="${t.c.id}">
+                  <td>${customerCell(t.c.id, t.c.phone)}</td>
+                  <td><span class="tag ${t.c.tier === 'Platinum' ? 'tag--gold' : ''}">${esc(t.c.tier)}</span></td>
+                  <td class="sm">${esc(t.c.city || '—')}</td>
+                  <td class="t-right t-mono">${t.count}</td>
+                  <td class="t-right t-mono t-strong">${Billing.money(t.spend)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     VIEW · Project brief
+     ============================================================ */
+  function viewBrief() {
+    const team = [
+      ['M. Srujan', 'AP25110070668'], ['G. Pranav', 'AP25110070089'], ['M. Anji', 'AP25110070163'],
+      ['K. Charan', 'AP25110070165'], ['Akhil', 'AP25110070409'],
+    ];
+    return `<div class="shell">
+      <div class="brief-hero">
+        <div class="eyebrow" style="color:var(--brass-light)">Java project · Presentation brief</div>
+        <h1 style="margin-top:14px">Booking &amp; Billing Management System</h1>
+        <p class="lede">A Java-based application for managing reservations, calculating bills and maintaining payment records — implemented here as a working web model of the same object-oriented design.</p>
+        <div class="chips">
+          <span>OOP · Java</span><span>JDBC · MySQL</span><span>GST billing</span><span>Availability validation</span><span>Receipt generation</span>
+        </div>
+        <div class="team">
+          ${team.map(([n, r]) => `<span>${esc(n)} · ${esc(r)}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="brief-grid">
+        <div class="card brief-card">
+          <h3><span class="n">01</span> Abstract</h3>
+          <ul>
+            <li>Computerises reservation creation and customer billing end to end.</li>
+            <li>Collects customer details, records bookings, calculates charges and maintains payment status.</li>
+            <li>Reduces manual calculation errors and removes duplicate entries.</li>
+            <li>Delivered as a console application, or Java Swing desktop UI, backed by MySQL through JDBC.</li>
+          </ul>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">02</span> Problem &amp; objectives</h3>
+          <ul>
+            <li><b>Manual records</b> — details scattered across registers, slow to search and update.</li>
+            <li><b>Calculation errors</b> — discounts, taxes and extras frequently missed.</li>
+            <li><b>Availability conflicts</b> — the same slot assigned more than once.</li>
+            <li><b>Objectives</b> — automate bookings, improve accuracy, maintain records, save time, provide transparency.</li>
+          </ul>
+        </div>
+
+        <div class="card brief-card" style="grid-column:span 2">
+          <h3><span class="n">03</span> System workflow</h3>
+          <div class="flow">
+            ${[['Customer', 'details'], ['Select', 'service / date / slot'], ['Check', 'availability'], ['Create', 'booking'], ['Calculate', 'bill'], ['Record', 'payment'], ['Generate', 'receipt']]
+              .map(([t, s], i) => `<div class="flow__step"><div class="n">0${i + 1}</div><div class="t">${t}<br><span class="faint" style="font-weight:400">${s}</span></div></div>`).join('')}
+          </div>
+          <p class="sm muted" style="margin-top:14px">Validation runs before saving: required fields must be present, dates and quantities must be valid, and the selected slot must be free.</p>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">04</span> Modules</h3>
+          <ul>
+            <li><b>Customer</b> — stores and retrieves guest information.</li>
+            <li><b>Booking</b> — reservations, availability and booking status.</li>
+            <li><b>Billing</b> — itemised charges and the final bill.</li>
+            <li><b>Payment</b> — mode, amount and payment status.</li>
+            <li><b>Report / receipt</b> — booking history, status and confirmation receipt.</li>
+          </ul>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">05</span> Technology &amp; OOP design</h3>
+          <ul>
+            <li><b>Java</b> — application logic and object-oriented design.</li>
+            <li><b>Java Swing</b> — optional graphical interface.</li>
+            <li><b>JDBC + MySQL</b> — persistence of customer, booking, bill and payment records.</li>
+            <li><b>Classes</b> — Customer, Booking, Bill, Payment and service classes keeping responsibilities separate.</li>
+          </ul>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">06</span> Billing calculation</h3>
+          <div class="formula">
+            <div><span>Service charge</span><span>₹1,000.00</span></div>
+            <div><span>Additional items</span><span>+ ₹200.00</span></div>
+            <div><span>Subtotal</span><span>₹1,200.00</span></div>
+            <div><span>Discount @ 5%</span><span>− ₹60.00</span></div>
+            <div><span>Taxable value</span><span>₹1,140.00</span></div>
+            <div><span>Tax @ 18%</span><span>+ ₹205.20</span></div>
+            <div style="border-top:1px solid var(--line);padding-top:7px;margin-top:2px"><span><b>Final amount</b></span><span><b>₹1,345.20</b></span></div>
+          </div>
+          <p class="tiny faint" style="margin-top:9px">Rates are configurable in Settings; the engine applies the same order of operations.</p>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">07</span> Validation rules</h3>
+          <ul>
+            <li>Blank mandatory fields are rejected.</li>
+            <li>Date, time and quantity values are checked.</li>
+            <li>A booked slot cannot be confirmed twice.</li>
+            <li>Payment is marked paid only when it is recorded successfully.</li>
+            <li>Invalid input surfaces a clear, specific message.</li>
+          </ul>
+        </div>
+
+        <div class="card brief-card">
+          <h3><span class="n">08</span> Scope &amp; future work</h3>
+          <ul>
+            <li><b>In scope</b> — customer entry, booking CRUD, availability checks, automated billing, payment records, receipts.</li>
+            <li><b>Future</b> — role-based login, payment gateway integration, SMS/email notifications, PDF export, multi-branch cloud deployment, mobile app.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card brief-card" style="margin-top:14px">
+        <h3><span class="n">09</span> Key takeaway</h3>
+        <p class="sm" style="color:var(--ink-soft);line-height:1.65;max-width:88ch">
+          A booking is complete only when the reservation details, the generated bill and the payment status are correctly linked. Separating customer, booking, bill and payment responsibilities keeps the system organised, accurate and extensible — which is exactly the structure this working model follows.
+        </p>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     VIEW · Settings
+     ============================================================ */
+  function viewSettings() {
+    const s = Store.settings();
+    const isNight = document.documentElement.dataset.theme === 'night';
+    return `<div class="shell">
+      ${pageHead('Settings', 'Business identity, billing defaults and local data.', `
+        <button class="btn btn--ghost" data-action="export">${icon('download')} Export data</button>
+      `)}
+
+      <div class="set-grid">
+        <div class="card set-card">
+          <h3>Business identity</h3>
+          <p class="desc">Appears on every invoice and receipt.</p>
+          <div class="set-rows">
+            <div class="field"><label class="field__label">Business name</label><input class="input" id="stBusiness" value="${esc(s.business)}" /></div>
+            <div class="field"><label class="field__label">Address</label><input class="input" id="stAddress" value="${esc(s.address)}" /></div>
+            <div class="field"><label class="field__label">Phone</label><input class="input" id="stPhone" value="${esc(s.phone)}" /></div>
+            <div class="field"><label class="field__label">Email</label><input class="input" id="stEmail" value="${esc(s.email)}" /></div>
+            <div class="field"><label class="field__label">GSTIN</label><input class="input input--mono" id="stGstin" value="${esc(s.gstin)}" /></div>
+            <button class="btn btn--primary btn--block mt-1" data-action="save-settings">Save identity</button>
+          </div>
+        </div>
+
+        <div class="set-grid" style="grid-template-columns:1fr;gap:14px">
+          <div class="card set-card">
+            <h3>Billing defaults</h3>
+            <p class="desc">Applied to new bookings; existing bills keep their original rate.</p>
+            <div class="set-rows">
+              <div class="set-row">
+                <div class="k">GST rate<small>Split equally between CGST and SGST</small></div>
+                <div class="field" style="width:108px">
+                  <input class="input input--mono" id="stGstRate" type="number" step="0.5" min="0" max="50" value="${(s.gstRate * 100).toFixed(1)}" />
+                </div>
+              </div>
+              <div class="set-row">
+                <div class="k">Currency<small>Indian Rupee, tax inclusive display</small></div>
+                <span class="tag tag--gold">INR ₹</span>
+              </div>
+              <button class="btn btn--ghost btn--block" data-action="save-billing">Update billing defaults</button>
+            </div>
+          </div>
+
+          <div class="card set-card">
+            <h3>Appearance</h3>
+            <p class="desc">Switch between the paper and night palettes.</p>
+            <div class="set-rows">
+              <div class="set-row">
+                <div class="k">Theme</div>
+                <div class="segmented">
+                  <button data-theme-set="light" class="${!isNight ? 'is-on' : ''}">Paper</button>
+                  <button data-theme-set="night" class="${isNight ? 'is-on' : ''}">Night</button>
+                </div>
+              </div>
+              <div class="set-row">
+                <div class="k">Demo data<small>Restore sample bookings and guests</small></div>
+                <button class="btn btn--danger btn--sm" data-action="reset-data">${icon('refresh')} Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card set-card mt-2">
+        <h3>System</h3>
+        <p class="desc">This model stores records in your browser so the workflow is fully demonstrable without a server.</p>
+        <div class="grid-3">
+          <div class="statrow" style="border:none;padding:0"><span class="k">Domain classes</span><span class="v">Customer · Booking · Bill · Payment</span></div>
+          <div class="statrow" style="border:none;padding:0"><span class="k">Records stored</span><span class="v">${Store.bookings().length} bookings · ${Store.payments().length} payments</span></div>
+          <div class="statrow" style="border:none;padding:0"><span class="k">Version</span><span class="v">v1.0 · OOP model</span></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     Invoice document
+     ============================================================ */
+  function invoiceHTML(bookingOrId) {
+    const booking = typeof bookingOrId === 'string' ? Store.bookingById(bookingOrId) : bookingOrId;
+    if (!booking) return '';
+    const bill = Store.billFor(booking);
+    const c = Store.customerById(booking.customerId);
+    const svc = Store.serviceById(booking.serviceId);
+    const s = Store.settings();
+    const pays = Store.paymentsFor(booking.id);
+    const invNo = booking.id.replace('BK-', 'INV-');
+
+    return `<div class="invoice-doc">
+      <div class="inv-head">
+        <div class="inv-brand">
+          <div class="inv-brand__mark">${icon('sparkle')}</div>
+          <div>
+            <h2>${esc(s.business)}</h2>
+            <p>${esc(s.address)}<br>${esc(s.phone)} · ${esc(s.email)}<br>GSTIN ${esc(s.gstin)}</p>
+          </div>
+        </div>
+        <div class="inv-meta">
+          <h3>Tax invoice</h3>
+          <div class="no">${esc(invNo)}</div>
+          <div class="dt">Issued ${fmtDate(booking.createdAt || booking.date)}</div>
+          <div class="dt">${payPill(bill.paymentStatus)}</div>
+        </div>
+      </div>
+
+      <div class="inv-parties">
+        <div class="inv-party">
+          <h4>Billed to</h4>
+          <div class="nm">${esc(c ? c.name : 'Guest')}</div>
+          <div class="ln">${esc(c ? c.phone : '')}</div>
+          <div class="ln">${esc(c ? c.email : '')}</div>
+          <div class="id">${esc(c ? c.id : '')}</div>
+        </div>
+        <div class="inv-party">
+          <h4>Reservation</h4>
+          <div class="nm">${esc(svc ? svc.name : 'Service')}</div>
+          <div class="ln">${fmtDate(booking.date, 'long')}</div>
+          <div class="ln">${esc(slotLabel(booking.slot))} · ${esc(booking.guests)} guests</div>
+          <div class="id">BOOKING ${esc(booking.id)}</div>
+        </div>
+      </div>
+
+      <div class="inv-items">
+        <table class="inv-tbl">
+          <thead><tr><th style="width:52%">Description</th><th class="t-right">Qty</th><th class="t-right">Rate</th><th class="t-right">Amount</th></tr></thead>
+          <tbody>
+            ${bill.items.map((it) => `<tr>
+              <td><div style="font-weight:500">${esc(it.name)}</div><div style="font-size:10px;color:#9a9a90;margin-top:1px">per ${esc(it.unit || 'unit')}</div></td>
+              <td class="t-right">${it.qty}</td>
+              <td class="t-right">${Billing.money(it.rate)}</td>
+              <td class="t-right">${Billing.money(it.amount)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="inv-sum">
+        <div class="inv-sum__box">
+          <div class="inv-sum__row"><span>Subtotal</span><span>${Billing.money(bill.subtotal)}</span></div>
+          ${bill.discount > 0 ? `<div class="inv-sum__row inv-sum__row--disc"><span>Discount${bill.discountType === 'percent' ? ` (${bill.discountValue}%)` : ''}</span><span>− ${Billing.money(bill.discount)}</span></div>` : ''}
+          <div class="inv-sum__row"><span>Taxable value</span><span>${Billing.money(bill.taxable)}</span></div>
+          <div class="inv-sum__row"><span>CGST @ ${(bill.gstRate * 50).toFixed(1)}%</span><span>${Billing.money(bill.cgst)}</span></div>
+          <div class="inv-sum__row"><span>SGST @ ${(bill.gstRate * 50).toFixed(1)}%</span><span>${Billing.money(bill.sgst)}</span></div>
+          <div class="inv-sum__row inv-sum__row--total"><span>Total</span><span>${Billing.money(bill.total)}</span></div>
+          ${bill.paid > 0 ? `<div class="inv-sum__row"><span>Paid</span><span>− ${Billing.money(bill.paid)}</span></div>` : ''}
+          ${bill.balance > 0 ? `<div class="inv-sum__row" style="color:#a4741c;font-weight:600"><span>Balance due</span><span>${Billing.money(bill.balance)}</span></div>` : ''}
+        </div>
+      </div>
+
+      <div class="inv-words"><b>Amount in words:</b> ${esc(Billing.amountInWords(bill.total))}</div>
+
+      ${pays.length ? `<div style="padding:14px 30px 0">
+        <h4 style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#9a9a90;font-weight:700;margin-bottom:6px">Payments recorded</h4>
+        <table class="inv-tbl"><tbody>
+          ${pays.map((p) => `<tr>
+            <td style="font-size:11px">${esc(p.method)} <span style="color:#9a9a90">· ${esc(p.reference || '')}</span></td>
+            <td class="t-right" style="color:#9a9a90">${fmtDate(p.date, 'short')}</td>
+            <td class="t-right">${Billing.money(p.amount)}</td>
+          </tr>`).join('')}
+        </tbody></table>
+      </div>` : ''}
+
+      <div class="inv-foot">
+        <div class="inv-terms">
+          <strong>Terms</strong>
+          Payment due on or before the reservation date. Cancellations within 24 hours are refundable to the original payment method. This is a computer-generated invoice and does not require a physical signature.
+        </div>
+        <div class="inv-stamp">
+          ${bill.paymentStatus === 'paid' ? '<span class="paid">Paid in full</span>' : bill.paymentStatus === 'partial' ? '<span class="paid" style="color:#a4741c;border-color:#a4741c">Part paid</span>' : '<span class="paid" style="color:#a5432f;border-color:#a5432f">Unpaid</span>'}
+          <div class="sig">Authorised signatory</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ============================================================
+     Drawer · booking detail
+     ============================================================ */
+  function openBookingDrawer(id) {
+    const booking = Store.bookingById(id);
+    if (!booking) return;
+    const bill = Store.billFor(booking);
+    const c = Store.customerById(booking.customerId);
+    const svc = Store.serviceById(booking.serviceId);
+    const pays = Store.paymentsFor(booking.id);
+
+    $('#drawer').innerHTML = `
+      <div class="drawer__head">
+        <div>
+          <div class="eyebrow">Booking</div>
+          <h2 class="display" style="font-size:23px;margin-top:7px">${esc(booking.id)}</h2>
+          <div class="row mt-1" style="gap:7px">${statusPill(booking.status)} ${payPill(bill.paymentStatus)}</div>
+        </div>
+        <button class="iconbtn" data-close-drawer aria-label="Close">${icon('x')}</button>
+      </div>
+      <div class="drawer__body">
+        <div class="card" style="padding:16px;margin-bottom:14px">
+          <div class="between">
+            <div class="who">
+              <div class="avatar ${toneFor(c ? c.name : '')}">${esc(initials(c ? c.name : 'G'))}</div>
+              <div><div class="who__name">${esc(c ? c.name : 'Guest')}</div>
+                <div class="who__meta">${esc(c ? c.phone : '')} · ${esc(c ? c.tier : '')}</div></div>
+            </div>
+            <button class="btn btn--quiet btn--sm" data-open-customer="${esc(booking.customerId)}">Profile ${icon('right')}</button>
+          </div>
+          <div class="divider"></div>
+          <div class="grid-2" style="gap:10px">
+            <div class="col"><span class="tiny faint">Service</span><span class="sm strong">${esc(svc ? svc.name : '—')}</span></div>
+            <div class="col"><span class="tiny faint">Category</span><span class="sm">${esc(svc ? svc.category : '—')}</span></div>
+            <div class="col"><span class="tiny faint">Date</span><span class="sm">${fmtDate(booking.date)}</span></div>
+            <div class="col"><span class="tiny faint">Slot</span><span class="sm">${esc(slotLabel(booking.slot))}</span></div>
+            <div class="col"><span class="tiny faint">Quantity</span><span class="sm">${esc(booking.qty)} ${esc(svc ? svc.unit : '')}${booking.qty > 1 ? 's' : ''}</span></div>
+            <div class="col"><span class="tiny faint">Guests</span><span class="sm">${esc(booking.guests)}</span></div>
+          </div>
+          ${booking.notes ? `<div class="divider"></div><div class="col"><span class="tiny faint">Notes</span><span class="sm" style="color:var(--ink-soft)">${esc(booking.notes)}</span></div>` : ''}
+        </div>
+
+        <div class="card" style="padding:16px;margin-bottom:14px">
+          <div class="between" style="margin-bottom:10px">
+            <span class="card__title">Bill</span>
+            <span class="tag">${esc(booking.id.replace('BK-', 'INV-'))}</span>
+          </div>
+          ${bill.items.map((it) => `<div class="bill-line bill-line--item"><span class="k">${esc(it.name)} ${it.qty > 1 ? `<span class="faint">×${it.qty}</span>` : ''}</span><span class="v">${Billing.money(it.amount)}</span></div>`).join('')}
+          <div class="bill-line bill-line--sub"><span class="k">Subtotal</span><span class="v">${Billing.money(bill.subtotal)}</span></div>
+          ${bill.discount > 0 ? `<div class="bill-line bill-line--disc"><span class="k">Discount</span><span class="v">− ${Billing.money(bill.discount)}</span></div>` : ''}
+          <div class="bill-line bill-line--muted"><span class="k">CGST + SGST</span><span class="v">${Billing.money(bill.tax)}</span></div>
+          <div class="bill-total"><span class="k">Total</span><span class="v">${Billing.money(bill.total)}</span></div>
+          <div class="bill-line" style="margin-top:8px"><span class="k">Paid</span><span class="v" style="color:var(--ok)">${Billing.money(bill.paid)}</span></div>
+          <div class="bill-line"><span class="k strong">Balance due</span><span class="v strong" style="color:${bill.balance > 0 ? 'var(--brass-deep)' : 'var(--ink-faint)'}">${Billing.money(bill.balance)}</span></div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <div class="between" style="margin-bottom:8px">
+            <span class="card__title">Payments</span>
+            <button class="btn btn--quiet btn--sm" data-pay="${esc(booking.id)}">${icon('plus')} Record</button>
+          </div>
+          ${pays.length ? pays.map((p) => `
+            <div class="statrow">
+              <span class="k">${icon('card')} ${esc(p.method)}<span class="tiny faint" style="margin-left:6px">${esc(p.reference || '')}</span></span>
+              <span class="v">${Billing.money(p.amount)}</span>
+            </div>`).join('') : `<p class="sm faint" style="padding:6px 0">No payments recorded yet.</p>`}
+        </div>
+      </div>
+      <div class="drawer__foot">
+        <button class="btn btn--brass" data-pay="${esc(booking.id)}">${icon('wallet')} Record payment</button>
+        <button class="btn btn--ghost" data-invoice="${esc(booking.id)}">${icon('receipt')} Invoice</button>
+        <div class="spacer"></div>
+        ${booking.status !== 'completed' ? `<button class="btn btn--ghost btn--sm" data-status="${esc(booking.id)}:completed">Mark complete</button>` : ''}
+        ${booking.status !== 'cancelled' ? `<button class="btn btn--danger btn--sm" data-status="${esc(booking.id)}:cancelled">Cancel</button>` : `<button class="btn btn--ghost btn--sm" data-status="${esc(booking.id)}:confirmed">Restore</button>`}
+      </div>
+    `;
+    showDrawer();
+  }
+
+  function openCustomerDrawer(id) {
+    const c = Store.customerById(id);
+    if (!c) return;
+    const rows = billsList().filter((r) => r.booking.customerId === id).sort((a, b) => b.booking.date.localeCompare(a.booking.date));
+    const lifetime = rows.filter((r) => r.booking.status !== 'cancelled').reduce((s, r) => s + r.bill.total, 0);
+    const outstanding = rows.reduce((s, r) => s + (r.booking.status !== 'cancelled' ? r.bill.balance : 0), 0);
+
+    $('#drawer').innerHTML = `
+      <div class="drawer__head">
+        <div class="who" style="gap:12px">
+          <div class="cust__av" style="width:44px;height:44px;flex:0 0 44px;font-size:18px">${esc(initials(c.name))}</div>
+          <div>
+            <h2 class="display" style="font-size:21px">${esc(c.name)}</h2>
+            <div class="tiny faint mt-0">${esc(c.id)} · ${esc(c.tier)} member</div>
+          </div>
+        </div>
+        <button class="iconbtn" data-close-drawer aria-label="Close">${icon('x')}</button>
+      </div>
+      <div class="drawer__body">
+        <div class="grid-2" style="gap:9px;margin-bottom:14px">
+          <div class="card" style="padding:13px"><span class="tiny faint">Lifetime billed</span><div class="mono" style="font-size:16px;margin-top:3px">${Billing.money(lifetime)}</div></div>
+          <div class="card" style="padding:13px"><span class="tiny faint">Outstanding</span><div class="mono" style="font-size:16px;margin-top:3px;color:${outstanding > 0 ? 'var(--brass-deep)' : 'var(--ink-faint)'}">${Billing.money(outstanding)}</div></div>
+        </div>
+
+        <div class="card" style="padding:16px;margin-bottom:14px">
+          <div class="col" style="gap:9px">
+            <div class="row sm">${icon('phone')} <span>${esc(c.phone)}</span></div>
+            <div class="row sm">${icon('mail')} <span>${esc(c.email || '—')}</span></div>
+            <div class="row sm">${icon('pin')} <span>${esc(c.city || '—')}</span></div>
+            <div class="row sm">${icon('clock')} <span>Guest since ${fmtDate(c.createdAt)}</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <div class="between" style="margin-bottom:10px">
+            <span class="card__title">Bookings (${rows.length})</span>
+            <button class="btn btn--quiet btn--sm" data-action="new-booking">${icon('plus')} New</button>
+          </div>
+          ${rows.length ? `<div class="timeline">
+            ${rows.map((r) => `<div class="tl-item" data-open-booking="${r.booking.id}">
+              <div class="tl-date"><div class="d num">${parseISO(r.booking.date).getDate()}</div><div class="m">${MONTHS[parseISO(r.booking.date).getMonth()]}</div></div>
+              <div class="tl-main">
+                <div class="tl-title trunc">${esc(r.service ? r.service.name : '')}</div>
+                <div class="tl-meta">${statusPill(r.booking.status)}<span class="tl-dot"></span><span>${Billing.money(r.bill.total)}</span></div>
+              </div>
+              <span class="tl-amt">${r.bill.balance > 0 ? `<span style="color:var(--brass-deep)">${Billing.money(r.bill.balance)}</span>` : icon('check')}</span>
+            </div>`).join('')}
+          </div>` : `<p class="sm faint">No bookings yet.</p>`}
+        </div>
+      </div>
+      <div class="drawer__foot">
+        <button class="btn btn--primary" data-action="new-booking">${icon('plus')} New booking</button>
+        <button class="btn btn--ghost" data-edit-customer="${esc(c.id)}">${icon('edit')} Edit</button>
+      </div>
+    `;
+    showDrawer();
+  }
+
+  /* ============================================================
+     Overlays
+     ============================================================ */
+  function showDrawer() {
+    $('#scrim').hidden = false;
+    $('#drawer').hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    $('#drawer').hidden = true;
+    if ($('#modal').hidden) {
+      $('#scrim').hidden = true;
+      document.body.style.overflow = '';
+    }
+  }
+  function showModal(html) {
+    $('#modal').innerHTML = `<div class="modal__box">${html}</div>`;
+    $('#modal').hidden = false;
+    if ($('#drawer').hidden) $('#scrim').hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    $('#modal').hidden = true;
+    $('#modal').innerHTML = '';
+    if ($('#drawer').hidden) {
+      $('#scrim').hidden = true;
+      document.body.style.overflow = '';
+    }
+  }
+
+  function openInvoiceModal(id) {
+    const b = Store.bookingById(id);
+    if (!b) return;
+    ui.currentInvoice = id;
+    showModal(`
+      <div class="modal__box" style="width:min(860px,100%)">
+        <div class="modal__head no-print">
+          <div class="between">
+            <div>
+              <h3>Invoice ${esc(b.id.replace('BK-', 'INV-'))}</h3>
+              <p>Generated from booking ${esc(b.id)}</p>
+            </div>
+            <button class="iconbtn" data-close-modal aria-label="Close">${icon('x')}</button>
+          </div>
+        </div>
+        <div class="modal__body" style="padding-top:16px">${invoiceHTML(b)}</div>
+        <div class="modal__foot no-print" style="border-top:1px solid var(--line-soft)">
+          <button class="btn btn--ghost" data-close-modal>Close</button>
+          <button class="btn btn--ghost" data-print="${esc(b.id)}">${icon('print')} Print</button>
+          <button class="btn btn--primary" data-pay="${esc(b.id)}">${icon('wallet')} Record payment</button>
+        </div>
+      </div>`);
+    $$('#modal .modal__box').forEach((el) => { el.style.maxHeight = 'calc(100vh - 40px)'; });
+  }
+
+  function openPaymentModal(bookingId) {
+    const options = Store.bookings().filter((b) => b.status !== 'cancelled');
+    const preselect = bookingId || (options[0] ? options[0].id : '');
+    const b = preselect ? Store.bookingById(preselect) : null;
+    const bill = b ? Store.billFor(b) : null;
+
+    showModal(`
+      <div class="modal__box">
+        <div class="modal__head">
+          <div class="between">
+            <div><h3>Record payment</h3><p>Settlement is written to the bill immediately.</p></div>
+            <button class="iconbtn" data-close-modal aria-label="Close">${icon('x')}</button>
+          </div>
+        </div>
+        <div class="modal__body">
+          <div class="form-grid">
+            <div class="field span-2">
+              <label class="field__label">Booking</label>
+              <select class="select" id="pmBooking">
+                ${options.map((o) => {
+                  const cc = Store.customerById(o.customerId);
+                  const bb = Store.billFor(o);
+                  return `<option value="${o.id}" ${o.id === preselect ? 'selected' : ''}>${esc(o.id)} · ${esc(cc ? cc.name : '')} · balance ${Billing.money(bb.balance)}</option>`;
+                }).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label class="field__label">Amount <span class="req">*</span></label>
+              <input class="input input--mono" type="number" id="pmAmount" value="${bill ? bill.balance.toFixed(2) : '0.00'}" min="0" step="0.01" />
+            </div>
+            <div class="field">
+              <label class="field__label">Method</label>
+              <select class="select" id="pmMethod">
+                <option>UPI</option><option>Card</option><option>Cash</option><option>Bank Transfer</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field__label">Reference</label>
+              <input class="input input--mono" id="pmRef" placeholder="Auto-generated" />
+            </div>
+            <div class="field">
+              <label class="field__label">Date</label>
+              <input class="input" type="date" id="pmDate" value="${Store.todayISO()}" />
+            </div>
+            <div class="field span-2">
+              <label class="field__label">Note</label>
+              <input class="input" id="pmNote" placeholder="e.g. balance settlement at check-in" />
+            </div>
+          </div>
+          <div class="card" style="padding:12px;margin-top:14px;background:var(--card-warm)" id="pmSummary"></div>
+        </div>
+        <div class="modal__foot">
+          <button class="btn btn--ghost" data-close-modal>Cancel</button>
+          <button class="btn btn--brass" data-save-payment>${icon('check')} Record payment</button>
+        </div>
+      </div>`);
+
+    const refresh = () => {
+      const bid = $('#pmBooking').value;
+      const bk = Store.bookingById(bid);
+      const bl = bk ? Store.billFor(bk) : null;
+      const sum = $('#pmSummary');
+      if (!bl || !sum) return;
+      const entered = Number($('#pmAmount').value) || 0;
+      const after = Math.max(bl.balance - entered, 0);
+      sum.innerHTML = `<div class="between">
+        <span class="sm muted">Total ${Billing.money(bl.total)} · paid ${Billing.money(bl.paid)}</span>
+        <span class="sm">Balance after: <b class="mono" style="color:${after > 0 ? 'var(--brass-deep)' : 'var(--ok)'}">${Billing.money(after)}</b></span>
+      </div>`;
+    };
+
+    $('#pmBooking').addEventListener('change', () => {
+      const bk = Store.bookingById($('#pmBooking').value);
+      const bl = bk ? Store.billFor(bk) : null;
+      $('#pmAmount').value = bl ? bl.balance.toFixed(2) : '0.00';
+      refresh();
+    });
+    $('#pmAmount').addEventListener('input', refresh);
+    refresh();
+  }
+
+  function openCustomerModal(id) {
+    const editing = id ? Store.customerById(id) : null;
+    showModal(`
+      <div class="modal__box">
+        <div class="modal__head">
+          <div class="between">
+            <div><h3>${editing ? 'Edit customer' : 'New customer'}</h3><p>Contact details are used on invoices and receipts.</p></div>
+            <button class="iconbtn" data-close-modal aria-label="Close">${icon('x')}</button>
+          </div>
+        </div>
+        <div class="modal__body">
+          <div class="form-grid">
+            <div class="field span-2" id="mName">
+              <label class="field__label">Full name <span class="req">*</span></label>
+              <input class="input" id="cmName" value="${editing ? esc(editing.name) : ''}" placeholder="e.g. Ananya Menon" />
+              <span class="field__err">Name is required</span>
+            </div>
+            <div class="field" id="mPhone">
+              <label class="field__label">Phone <span class="req">*</span></label>
+              <input class="input" id="cmPhone" value="${editing ? esc(editing.phone) : ''}" placeholder="+91 98470 00000" />
+              <span class="field__err">Enter a valid phone</span>
+            </div>
+            <div class="field">
+              <label class="field__label">Email</label>
+              <input class="input" id="cmEmail" type="email" value="${editing ? esc(editing.email) : ''}" placeholder="guest@example.com" />
+            </div>
+            <div class="field">
+              <label class="field__label">City</label>
+              <input class="input" id="cmCity" value="${editing ? esc(editing.city) : ''}" placeholder="Kochi" />
+            </div>
+            <div class="field">
+              <label class="field__label">Tier</label>
+              <select class="select" id="cmTier">
+                ${['Silver', 'Gold', 'Platinum'].map((t) => `<option ${editing && editing.tier === t ? 'selected' : ''}>${t}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field span-2">
+              <label class="field__label">Notes</label>
+              <textarea class="textarea" id="cmNotes" placeholder="Preferences, allergies, special requests…">${editing ? esc(editing.notes) : ''}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button class="btn btn--ghost" data-close-modal>Cancel</button>
+          <button class="btn btn--primary" data-save-customer="${editing ? esc(editing.id) : ''}">${icon('check')} ${editing ? 'Save changes' : 'Create customer'}</button>
+        </div>
+      </div>`);
+  }
+
+  function openConfirm(title, copy, onYes, yesLabel = 'Confirm') {
+    showModal(`
+      <div class="modal__box" style="width:min(420px,100%)">
+        <div class="modal__head">
+          <h3>${esc(title)}</h3>
+          <p>${esc(copy)}</p>
+        </div>
+        <div class="modal__foot">
+          <button class="btn btn--ghost" data-close-modal>Cancel</button>
+          <button class="btn btn--danger" id="confirmYes">${esc(yesLabel)}</button>
+        </div>
+      </div>`);
+    $('#confirmYes').addEventListener('click', () => { closeModal(); onYes(); });
+  }
+
+  /* ============================================================
+     Actions
+     ============================================================ */
+  function saveCustomer(id) {
+    const name = $('#cmName').value.trim();
+    const phone = $('#cmPhone').value.trim();
+    let ok = true;
+    if (!name) { $('#mName').classList.add('field--err'); ok = false; } else $('#mName').classList.remove('field--err');
+    if (!/^[+\d][\d\s\-()]{6,}$/.test(phone)) { $('#mPhone').classList.add('field--err'); ok = false; } else $('#mPhone').classList.remove('field--err');
+    if (!ok) return;
+    const payload = {
+      name, phone,
+      email: $('#cmEmail').value.trim(),
+      city: $('#cmCity').value.trim(),
+      tier: $('#cmTier').value,
+      notes: $('#cmNotes').value.trim(),
+    };
+    if (id) {
+      Store.updateCustomer(id, payload);
+      toast('Customer updated');
+    } else {
+      const c = Store.createCustomer(payload);
+      toast(`${c.name} added`);
+    }
+    closeModal();
+    render();
+  }
+
+  function savePayment() {
+    const bookingId = $('#pmBooking').value;
+    const amount = Number($('#pmAmount').value) || 0;
+    if (!bookingId) { toast('Choose a booking', 'bad'); return; }
+    if (amount <= 0) { toast('Enter an amount greater than zero', 'bad'); return; }
+    Store.recordPayment(bookingId, {
+      amount,
+      method: $('#pmMethod').value,
+      reference: $('#pmRef').value.trim() || undefined,
+      note: $('#pmNote').value.trim(),
+      date: $('#pmDate').value || Store.todayISO(),
+    });
+    closeModal();
+    toast(`${Billing.money(amount)} recorded against ${bookingId}`);
+    render();
+    if (!$('#drawer').hidden && $('#drawer').innerHTML.includes(bookingId)) openBookingDrawer(bookingId);
+  }
+
+  function printInvoice(id) {
+    const target = id || ui.currentInvoice || (Store.bookings()[0] && Store.bookings()[0].id);
+    if (!target) { toast('Nothing to print yet', 'bad'); return; }
+    $('#printArea').innerHTML = invoiceHTML(target);
+    window.print();
+  }
+
+  function exportData() {
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      settings: Store.settings(),
+      customers: Store.customers(),
+      bookings: Store.bookings().map((b) => ({ ...b, bill: Store.billFor(b) })),
+      payments: Store.payments(),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `aurelia-booking-billing-${Store.todayISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    toast('Ledger exported as JSON');
+  }
+
+  /* ============================================================
+     Search
+     ============================================================ */
+  function buildSearchIndex() {
+    const items = [];
+    Store.bookings().forEach((b) => {
+      const c = Store.customerById(b.customerId);
+      const s = Store.serviceById(b.serviceId);
+      items.push({
+        type: 'booking', id: b.id,
+        title: `${b.id} · ${c ? c.name : 'Guest'}`,
+        sub: `${s ? s.name : ''} · ${fmtDate(b.date, 'short')} · ${slotName(b.slot)}`,
+        icon: 'calendar',
+      });
+    });
+    Store.customers().forEach((c) => {
+      items.push({
+        type: 'customer', id: c.id, title: c.name, sub: `${c.id} · ${c.phone}`, icon: 'user',
+      });
+    });
+    return items;
+  }
+
+  function openSearch(q = '') {
+    const panel = $('#searchPanel');
+    const all = buildSearchIndex();
+    const query = q.trim().toLowerCase();
+    const results = (query ? all.filter((r) => (r.title + ' ' + r.sub).toLowerCase().includes(query)) : all).slice(0, 8);
+    ui.searchCursor = 0;
+    panel.innerHTML = `
+      <div class="searchpanel__head">${query ? `Results for “${esc(q)}”` : 'Jump to'}</div>
+      <div class="searchpanel__list">
+        ${results.length ? results.map((r, i) => `
+          <div class="sres ${i === 0 ? 'is-cursor' : ''}" data-search-result="${esc(r.type)}:${esc(r.id)}">
+            <span class="sres__icon">${icon(r.icon)}</span>
+            <div class="sres__main"><div class="sres__t">${esc(r.title)}</div><div class="sres__s">${esc(r.sub)}</div></div>
+            <span class="sres__k">${r.type === 'booking' ? 'BK' : 'CU'}</span>
+          </div>`).join('') : `<div style="padding:22px;text-align:center" class="sm faint">No matches — try a name, booking ID or service.</div>`}
+      </div>`;
+    panel.hidden = false;
+    ui.searchOpen = true;
+    ui.lastResults = results;
+  }
+  function closeSearch() {
+    $('#searchPanel').hidden = true;
+    ui.searchOpen = false;
+  }
+
+  /* ============================================================
+     Router / render
+     ============================================================ */
+  const VIEWS = {
+    dashboard: viewDashboard,
+    bookings: viewBookings,
+    new: viewNew,
+    customers: viewCustomers,
+    invoices: viewInvoices,
+    payments: viewPayments,
+    reports: viewReports,
+    brief: viewBrief,
+    settings: viewSettings,
+  };
+
+  function render() {
+    const view = VIEWS[ui.route] || viewDashboard;
+    const canvas = $('#canvas');
+    canvas.innerHTML = view();
+    hydrateIcons(canvas);
+
+    $$('.navitem').forEach((a) => a.classList.toggle('is-active', a.dataset.view === ui.route));
+
+    if (ui.route === 'new') bindNewBooking();
+    if (ui.route === 'bookings') {
+      const s = $('#bookingSearch');
+      if (s) {
+        s.addEventListener('input', (e) => {
+          ui.filterQ = e.target.value;
+          const pos = e.target.selectionStart;
+          render();
+          const el = $('#bookingSearch');
+          if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+        });
+      }
+    }
+    if (ui.route === 'customers') {
+      const s = $('#customerSearch');
+      if (s) {
+        s.addEventListener('input', (e) => {
+          ui.filterQ = e.target.value;
+          const pos = e.target.selectionStart;
+          render();
+          const el = $('#customerSearch');
+          if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+        });
+      }
+    }
+    canvas.scrollTop = 0;
+  }
+
+  function navigate(route) {
+    ui.route = VIEWS[route] ? route : 'dashboard';
+    ui.filterQ = '';
+    if (route !== 'invoices' && route !== 'bookings') ui.filterStatus = 'all';
+    if (location.hash !== '#/' + route) history.pushState(null, '', '#/' + route);
+    closeDrawer();
+    render();
+    $('#rail').classList.remove('is-open');
+    hydrateNavBadge();
+  }
+
+  function hydrateNavBadge() {
+    const badge = $('#navBookingBadge');
+    if (!badge) return;
+    const active = Store.bookings().filter((b) => b.status !== 'cancelled').length;
+    badge.textContent = String(active);
+    badge.dataset.tone = 'alert';
+  }
+
+  function routeFromHash() {
+    const h = (location.hash || '').replace(/^#\/?/, '');
+    return h || 'dashboard';
+  }
+
+  /* ============================================================
+     Global events
+     ============================================================ */
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+
+    const link = t.closest('[data-link]');
+    if (link) { navigate(link.dataset.link); return; }
+
+    const nav = t.closest('.navitem');
+    if (nav) { e.preventDefault(); navigate(nav.dataset.view); return; }
+
+    if (t.closest('#menuBtn')) { $('#rail').classList.toggle('is-open'); return; }
+
+    if (t.closest('[data-close-drawer]')) { closeDrawer(); return; }
+    if (t.closest('[data-close-modal]')) { closeModal(); return; }
+
+    if (t.closest('#scrim')) {
+      if (!$('#modal').hidden) closeModal();
+      else closeDrawer();
+      return;
+    }
+    if (t.closest('#modal') && !t.closest('.modal__box')) { closeModal(); return; }
+
+    const bookingEl = t.closest('[data-open-booking]');
+    if (bookingEl) { openBookingDrawer(bookingEl.dataset.openBooking); return; }
+
+    const custEl = t.closest('[data-open-customer]');
+    if (custEl) { openCustomerDrawer(custEl.dataset.openCustomer); return; }
+
+    const invEl = t.closest('[data-open-invoice]');
+    if (invEl) { openInvoiceModal(invEl.dataset.openInvoice); return; }
+
+    const invBtn = t.closest('[data-invoice]');
+    if (invBtn) { openInvoiceModal(invBtn.dataset.invoice); return; }
+
+    const payBtn = t.closest('[data-pay]');
+    if (payBtn) { openPaymentModal(payBtn.dataset.pay); return; }
+
+    const printBtn = t.closest('[data-print]');
+    if (printBtn) { printInvoice(printBtn.dataset.print); return; }
+
+    const statusBtn = t.closest('[data-status]');
+    if (statusBtn) {
+      const [id, status] = statusBtn.dataset.status.split(':');
+      if (status === 'cancelled') {
+        openConfirm('Cancel this booking?', 'The reservation will be marked cancelled and its slot released. Recorded payments remain in the ledger.', () => {
+          Store.setBookingStatus(id, 'cancelled');
+          toast(`${id} cancelled`, 'bad');
+          render(); openBookingDrawer(id);
+        }, 'Cancel booking');
+      } else {
+        Store.setBookingStatus(id, status);
+        toast(`${id} marked ${status}`);
+        render(); openBookingDrawer(id);
+      }
+      return;
+    }
+
+    const editCust = t.closest('[data-edit-customer]');
+    if (editCust) { openCustomerModal(editCust.dataset.editCustomer); return; }
+
+    const filterBtn = t.closest('[data-filter-status]');
+    if (filterBtn) { ui.filterStatus = filterBtn.dataset.filterStatus; render(); return; }
+
+    const themeBtn = t.closest('[data-theme-set]');
+    if (themeBtn) {
+      setTheme(themeBtn.dataset.themeSet);
+      render();
+      return;
+    }
+
+    const sres = t.closest('[data-search-result]');
+    if (sres) {
+      const [type, id] = sres.dataset.searchResult.split(':');
+      closeSearch();
+      if (type === 'booking') openBookingDrawer(id);
+      else openCustomerDrawer(id);
+      return;
+    }
+
+    const action = t.closest('[data-action]');
+    if (action) {
+      const a = action.dataset.action;
+      if (a === 'new-booking') navigate('new');
+      else if (a === 'add-customer') openCustomerModal();
+      else if (a === 'record-payment') openPaymentModal();
+      else if (a === 'create-booking') createBooking();
+      else if (a === 'save-payment') savePayment();
+      else if (a === 'export') exportData();
+      else if (a === 'save-settings') {
+        Store.updateSettings({
+          business: $('#stBusiness').value.trim(),
+          address: $('#stAddress').value.trim(),
+          phone: $('#stPhone').value.trim(),
+          email: $('#stEmail').value.trim(),
+          gstin: $('#stGstin').value.trim(),
+        });
+        toast('Business identity saved');
+        render();
+      } else if (a === 'save-billing') {
+        const rate = Number($('#stGstRate').value);
+        if (Number.isNaN(rate) || rate < 0 || rate > 50) { toast('GST rate must be between 0 and 50', 'bad'); return; }
+        Store.updateSettings({ gstRate: rate / 100 });
+        toast(`GST rate set to ${rate}%`);
+        render();
+      } else if (a === 'reset-data') {
+        openConfirm('Reset demo data?', 'All bookings, customers and payments in this browser will be replaced with the original sample set.', () => {
+          Store.reset();
+          toast('Demo data restored');
+          navigate('dashboard');
+        }, 'Reset data');
+      }
+      return;
+    }
+
+    const saveCust = t.closest('[data-save-customer]');
+    if (saveCust) { saveCustomer(saveCust.dataset.saveCustomer || null); return; }
+
+    if (t.closest('#printCtxBtn')) { printInvoice(); return; }
+
+    if (!t.closest('.searchpanel') && !t.closest('.topbar__search')) closeSearch();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      $('#globalSearch').focus();
+      openSearch($('#globalSearch').value);
+      return;
+    }
+    if (e.key === 'Escape') {
+      if (ui.searchOpen) { closeSearch(); return; }
+      if (!$('#modal').hidden) { closeModal(); return; }
+      if (!$('#drawer').hidden) { closeDrawer(); return; }
+    }
+    if (ui.searchOpen) {
+      const list = $$('.sres');
+      if (!list.length) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        ui.searchCursor = (ui.searchCursor + (e.key === 'ArrowDown' ? 1 : -1) + list.length) % list.length;
+        list.forEach((el, i) => el.classList.toggle('is-cursor', i === ui.searchCursor));
+        list[ui.searchCursor].scrollIntoView({ block: 'nearest' });
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const el = list[ui.searchCursor];
+        if (el) el.click();
+      }
+    }
+  });
+
+  const searchInput = $('#globalSearch');
+  searchInput.addEventListener('input', (e) => openSearch(e.target.value));
+  searchInput.addEventListener('focus', (e) => openSearch(e.target.value));
+
+  window.addEventListener('popstate', () => {
+    ui.route = routeFromHash();
+    render();
+    hydrateNavBadge();
+  });
+
+  /* ── Theme ─────────────────────────────────────────────── */
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('aurelia.theme', theme); } catch (err) { /* noop */ }
+  }
+
+  /* ── Boot ──────────────────────────────────────────────── */
+  function boot() {
+    try {
+      const saved = localStorage.getItem('aurelia.theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch (err) { /* noop */ }
+
+    const now = new Date();
+    $('#topbarDate').textContent = `${DAYS[now.getDay()]} · ${now.getDate()} ${MONTHS_LONG[now.getMonth()]} ${now.getFullYear()}`;
+
+    ui.route = routeFromHash();
+    hydrateIcons(document);
+    render();
+    hydrateNavBadge();
+  }
+
+  boot();
+})();
+
+</script>
+</body>
+</html>

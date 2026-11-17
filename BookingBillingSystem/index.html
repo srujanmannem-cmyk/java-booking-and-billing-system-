@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aurélia · Booking &amp; Billing Management System</title>
+<meta name="description" content="A reservations, billing and payment management console — booking lifecycle, GST billing engine, receipts and revenue reporting." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ─── Sidebar ─────────────────────────────────────────── -->
+  <aside class="rail" id="rail">
+    <div class="rail__brand">
+      <div class="monogram" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M20 4.5 34 12v16L20 35.5 6 28V12L20 4.5Z" stroke="currentColor" stroke-width="1.1" opacity=".55"/>
+          <path d="M20 11.5c4.7 3.3 7 7.1 7 11.2 0 3.6-3.1 5.8-7 5.8s-7-2.2-7-5.8c0-4.1 2.3-7.9 7-11.2Z" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="20" cy="23" r="2.1" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="rail__brand-text">
+        <span class="rail__name">Aurélia</span>
+        <span class="rail__sub">Reservations</span>
+      </div>
+    </div>
+
+    <nav class="rail__nav" id="railNav">
+      <p class="rail__label">Overview</p>
+      <a class="navitem" href="#/dashboard" data-view="dashboard">
+        <span class="navitem__icon" data-icon="grid"></span><span>Dashboard</span>
+      </a>
+
+      <p class="rail__label">Operations</p>
+      <a class="navitem" href="#/bookings" data-view="bookings">
+        <span class="navitem__icon" data-icon="calendar"></span><span>Bookings</span>
+        <em class="navitem__badge" id="navBookingBadge">0</em>
+      </a>
+      <a class="navitem" href="#/new" data-view="new">
+        <span class="navitem__icon" data-icon="plus"></span><span>New booking</span>
+      </a>
+      <a class="navitem" href="#/customers" data-view="customers">
+        <span class="navitem__icon" data-icon="users"></span><span>Customers</span>
+      </a>
+
+      <p class="rail__label">Finance</p>
+      <a class="navitem" href="#/invoices" data-view="invoices">
+        <span class="navitem__icon" data-icon="receipt"></span><span>Invoices</span>
+      </a>
+      <a class="navitem" href="#/payments" data-view="payments">
+        <span class="navitem__icon" data-icon="wallet"></span><span>Payments</span>
+      </a>
+      <a class="navitem" href="#/reports" data-view="reports">
+        <span class="navitem__icon" data-icon="chart"></span><span>Reports</span>
+      </a>
+
+      <p class="rail__label">System</p>
+      <a class="navitem" href="#/brief" data-view="brief">
+        <span class="navitem__icon" data-icon="book"></span><span>Project brief</span>
+      </a>
+      <a class="navitem" href="#/settings" data-view="settings">
+        <span class="navitem__icon" data-icon="sliders"></span><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="rail__foot">
+      <div class="rail__note">
+        <span class="dot dot--live"></span>
+        <div>
+          <strong>System online</strong>
+          <small>Java OOP model · v1.0</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── Main ────────────────────────────────────────────── -->
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn topbar__menu" id="menuBtn" aria-label="Toggle navigation" data-icon="menu"></button>
+      <div class="topbar__search">
+        <span data-icon="search"></span>
+        <input id="globalSearch" type="search" placeholder="Search bookings, guests, invoices…" autocomplete="off" />
+        <kbd>⌘K</kbd>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar__date" id="topbarDate"></div>
+        <button class="btn btn--ghost" id="printCtxBtn" data-icon="print" title="Print current invoice"></button>
+        <button class="btn btn--primary" data-action="new-booking">
+          <span data-icon="plus"></span> New booking
+        </button>
+      </div>
+    </header>
+
+    <main class="canvas" id="canvas" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- ─── Drawer / modal host ──────────────────────────────── -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Details"></aside>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="searchpanel" id="searchPanel" hidden></div>
+<div class="print-area" id="printArea"></div>
+
+<script src="js/billing.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
